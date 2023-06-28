@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
@@ -15,8 +14,6 @@ func exeTmpl(w http.ResponseWriter, r *http.Request, view *viewData, tmpl string
 	if view == nil {
 		view = &viewData{}
 	}
-	view.CSS_Shared = template.URL(shared_css)
-	view.JS_Shared = template.URL(shared_js)
 	err := templates.ExecuteTemplate(w, tmpl, view)
 	if err != nil {
 		log.Println(err)

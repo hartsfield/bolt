@@ -1,3 +1,4 @@
+{{define shared_js}}
 function jumpTo(eid) {
     var jump = document.getElementById(eid);
     jump.scrollIntoView({
@@ -37,3 +38,4 @@ async function getExample(view) {
         console.log("error");
     }
 }
+{{end}}

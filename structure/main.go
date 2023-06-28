@@ -2,7 +2,6 @@ package main // viewData represents the root model used to dynamically update th
 
 import (
 	"context"
-	_ "embed"
 	"fmt"
 	"html/template"
 	"log"
@@ -14,16 +13,8 @@ import (
 )
 
 type viewData struct {
-	CSS_Shared template.URL
-	JS_Shared  template.URL
-	PageTitle  string
+	PageTitle string
 }
-
-//go:embed internal/shared/css/main.css
-var shared_css string
-
-//go:embed internal/shared/js/main.js
-var shared_js string
 
 // ckey/ctxkey is used as the key for the HTML context and is how we retrieve
 // token information and pass it around to handlers
