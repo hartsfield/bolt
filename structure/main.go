@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/go-redis/redis/v9"
+	"github.com/go-redis/redis/v8"
 )
 
 type viewData struct {

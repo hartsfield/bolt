@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/redis/go-redis/v8"
 )
 
 // exeTmpl is used to build and execute an html template.
