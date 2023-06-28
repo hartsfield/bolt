@@ -14,8 +14,8 @@ import (
 )
 
 type viewData struct {
-	CSS_Shared string
-	JS_Shared  string
+	CSS_Shared template.URL
+	JS_Shared  template.URL
 	PageTitle  string
 }
 
