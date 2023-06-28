@@ -12,6 +12,28 @@ import (
 	"time"
 )
 
+type env map[string]string
+
+type config struct {
+	App    app
+	GCloud gcloud
+	Env    env
+}
+
+type app struct {
+	Name    string
+	Version string
+	Env     env
+	Port    string
+}
+
+type gcloud struct {
+	Command  string
+	Zone     string
+	Instance string
+	Project  string
+}
+
 type stringFlag struct {
 	set   bool
 	value string
@@ -79,8 +101,12 @@ func init() {
 	fMap["add-page"] = &stringFlag{}
 	fMap["new-page"] = &stringFlag{do: createPage}
 	fMap["add-style"] = &stringFlag{do: addStyle}
+	fMap["genscript"] = &stringFlag{do: genscript}
+	fMap["deploy"] = &stringFlag{do: deploy}
 
 	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
+	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
+	flag.Var(fMap["genscript"], "genscript", "Creates a new project initilization script")
 	flag.Var(fMap["add-component"], "add-component", "Installs a component from a remote git repository")
 	flag.Var(fMap["new-component"], "new-component", "Initializes a new component with the given name")
 	flag.Var(fMap["add-page"], "add-page", "Installs a page template from a remote git repository")
