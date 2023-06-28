@@ -11,6 +11,8 @@ import (
 
 // exeTmpl is used to build and execute an html template.
 func exeTmpl(w http.ResponseWriter, r *http.Request, view *viewData, tmpl string) {
+	view.CSS_Shared = shared_css
+	view.JS_Shared = shared_js
 	err := templates.ExecuteTemplate(w, tmpl, view)
 	if err != nil {
 		log.Println(err)
