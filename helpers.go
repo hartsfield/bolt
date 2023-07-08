@@ -44,62 +44,6 @@ func create(name, structure string) {
 	js_.WriteString(`{{ define "` + name + `.js" }}` + "\n" + `{{end}}`)
 	fmt.Println("Created:", "\n", wd+name+"/"+name+"{.tmpl,.css,.js}")
 }
-
-func autoNav(name string, sections []string) {
-	wd := "internal/components/"
-	ex, err := exists(wd + name)
-	if err != nil || ex {
-		fmt.Println("Component already exists", err)
-		os.Exit(0)
-	}
-	os.MkdirAll(wd+name, 0755)
-	tmpl_, err := os.Create(wd + name + "/" + name + ".tmpl")
-	if err != nil {
-		log.Println(err)
-	}
-	tmpl_.WriteString(`
-{{ define "` + name + `.tmpl" }}
-<div class="navbar-outer">
-  <div class="logo-nav" onclick="window.location = window.location.origin">{{ .CompanyName }} - Security Enhancements&nbsp;🛡️</div>
-
-  <div class="nav-landscape">
-    <ul>
-       <li onclick="jumpTo('section-services')">Services & Products</li>
-       <li onclick="jumpTo('section-software')">Business Software</li>
-       <li onclick="jumpTo('section-location')">Locations</li>
-       <li onclick="jumpTo('section-contact')">Contact</li>
-    </ul>
-  </div>
-
-  <div class="nav-portrait" id="nav-portrait">
-    <div class="nav-portrait-logo">{{ .CompanyName }}</div>
-    <ul>
-       <li onclick="jumpTo('section-services')">Services & Products</li>
-       <li onclick="jumpTo('section-software')">Business Software</li>
-       <li onclick="jumpTo('section-location')">Locations</li>
-       <li onclick="jumpTo('section-contact')">Contact</li>
-    </ul>
-  </div>
-
-  <div class="ham-outer" onclick="showNavPortrait()">
-    <div class="hamburger"></div>
-    <div class="hamburger"></div>
-    <div class="hamburger"></div>
-  </div>
-
-</div>
-
-<style>{{ template "` + name + `.css" }}</style>
-<script>{{ template "` + name + `.js"}}</script>
-{{end}}
-                `)
-
-	// tmpl_.WriteString(`{{ define "` + name + `.tmpl" }}` + "\n" +
-	// 	`<style>{{ template "` + name + `.css" }}</style>` + "\n" +
-	// 	`<script>{{ template "` + name + `.js"}}</script>` + "\n" +
-	// 	`{{end}}`)
-
-}
 func autoList(name string, listItems []string) {}
 func autoFlex(name string)                     {}
 

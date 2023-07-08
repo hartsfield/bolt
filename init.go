@@ -103,7 +103,9 @@ func init() {
 	fMap["add-style"] = &stringFlag{do: addStyle}
 	fMap["genscript"] = &stringFlag{do: genscript}
 	fMap["deploy"] = &stringFlag{do: deploy}
+	fMap["autonav"] = &stringFlag{do: autonav}
 
+	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")
 	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
 	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
 	flag.Var(fMap["genscript"], "genscript", "Creates a new project initilization script")
