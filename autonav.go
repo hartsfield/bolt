@@ -26,13 +26,13 @@ func autonav_create(name string, tmpl_ *os.File, sections []string) {
 	wd := "internal/components/"
 	var navListHTML string
 	for _, section := range sections {
-		navListHTML = navListHTML + `<li onclick="jumpTo('section-
-                ` + section + `')">` + section + `</li>` + "\n"
+		navListHTML = navListHTML + `<li onclick="jumpTo('section-` +
+			section + `')">` + section + `</li>` + "\n"
 	}
 
 	tmpl_.WriteString(`{{ define "` + name + `.tmpl" }}
 <div class="navbar-outer">
-  <div class="logo-nav" onclick="window.location = window.location.origin">{{ .CompanyName }} - Security Enhancements&nbsp;🛡️</div>
+  <div class="logo-nav" onclick="window.location = window.location.origin">Bolt</div>
 
   <div class="nav-landscape">
     <ul>
@@ -41,7 +41,7 @@ func autonav_create(name string, tmpl_ *os.File, sections []string) {
   </div>
 
   <div class="nav-portrait" id="nav-portrait">
-    <div class="nav-portrait-logo">{{ .CompanyName }}</div>
+    <div class="nav-portrait-logo">Bolt</div>
     <ul>
     ` + "\n" + navListHTML + `
     </ul>

@@ -1,4 +1,4 @@
-{{define shared_js}}
+{{define "shared_js"}}
 function jumpTo(eid) {
     var jump = document.getElementById(eid);
     jump.scrollIntoView({

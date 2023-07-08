@@ -259,7 +259,7 @@ func boltInit(appName string) {
 	}
 	rs_sh.WriteString(rssh_tmpl)
 
-	cmd := exec.Command("tree", "--dirsfirst", ".")
+	cmd := exec.Command("tree", "-C", "--dirsfirst", ".")
 	b, err := cmd.Output()
 	if err != nil {
 		log.Println(err)
