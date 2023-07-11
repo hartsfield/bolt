@@ -96,7 +96,7 @@ func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	fMap["init"] = &stringFlag{do: boltInit}
-	fMap["add-component"] = &stringFlag{}
+	// fMap["install-component"] = &stringFlag{do: installComponent}
 	fMap["new-component"] = &stringFlag{do: createComponent}
 	fMap["add-page"] = &stringFlag{}
 	fMap["new-page"] = &stringFlag{do: createPage}
@@ -104,12 +104,14 @@ func init() {
 	fMap["genscript"] = &stringFlag{do: genscript}
 	fMap["deploy"] = &stringFlag{do: deploy}
 	fMap["autonav"] = &stringFlag{do: autonav}
+	fMap["insert-component"] = &stringFlag{do: insertcomponent}
 
+	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
+	flag.Var(fMap["insert-component"], "insert-component", "Inserts a new component into a page")
 	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")
 	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
 	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
 	flag.Var(fMap["genscript"], "genscript", "Creates a new project initilization script")
-	flag.Var(fMap["add-component"], "add-component", "Installs a component from a remote git repository")
 	flag.Var(fMap["new-component"], "new-component", "Initializes a new component with the given name")
 	flag.Var(fMap["add-page"], "add-page", "Installs a page template from a remote git repository")
 	flag.Var(fMap["new-page"], "new-page", "Initializes a new page with the given name")
