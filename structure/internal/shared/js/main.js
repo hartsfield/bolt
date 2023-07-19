@@ -6,7 +6,6 @@ function jumpTo(eid) {
         block: 'center',
         inline: 'center'
     });
-    hideMenu();
 }
 
 function toggleDisplay(elem) {

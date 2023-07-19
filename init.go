@@ -81,6 +81,12 @@ var (
 	server_go_tmpl string
 	//go:embed structure/bolt_conf.json
 	bolt_conf_tmpl string
+	//go:embed structure/viewdata.go
+	viewdata_go_tmpl string
+	//go:embed structure/globals.go
+	globals_go_tmpl string
+	//go:embed structure/autoload.sh
+	globals_autoload_sh string
 )
 
 // other globals
@@ -104,11 +110,15 @@ func init() {
 	fMap["genscript"] = &stringFlag{do: genscript}
 	fMap["deploy"] = &stringFlag{do: deploy}
 	fMap["autonav"] = &stringFlag{do: autonav}
+	fMap["autosplash"] = &stringFlag{do: autosplash}
 	fMap["insert-component"] = &stringFlag{do: insertcomponent}
+	fMap["remote-service-restart"] = &stringFlag{do: remoteServiceRestart}
 
 	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
+	flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
 	flag.Var(fMap["insert-component"], "insert-component", "Inserts a new component into a page")
 	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")
+	flag.Var(fMap["autosplash"], "autosplash", "Initializes a splash screen component")
 	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
 	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
 	flag.Var(fMap["genscript"], "genscript", "Creates a new project initilization script")
@@ -248,6 +258,24 @@ func boltInit(appName string) {
 		log.Println(err)
 	}
 	helpers_go.WriteString(helpers_go_tmpl)
+
+	globals_go, err := os.Create(appdir + "globals.go")
+	if err != nil {
+		log.Println(err)
+	}
+	globals_go.WriteString(globals_go_tmpl)
+
+	viewdata_go, err := os.Create(appdir + "viewdata.go")
+	if err != nil {
+		log.Println(err)
+	}
+	viewdata_go.WriteString(viewdata_go_tmpl)
+
+	autoloadSh, err := os.Create(appdir + "autoload.sh")
+	if err != nil {
+		log.Println(err)
+	}
+	autoloadSh.WriteString(globals_autoload_sh)
 
 	dockerfile, err := os.Create(appdir + "Dockerfile")
 	if err != nil {

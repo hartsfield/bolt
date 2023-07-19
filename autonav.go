@@ -4,28 +4,32 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
-func autonav(name string) {
+func autonav(sections string) {
 	wd := "internal/components/"
-	ex, err := exists(wd + name)
+	ex, err := exists(wd + "autonav")
 	if err != nil || ex {
 		fmt.Println("Component already exists", err)
 		os.Exit(0)
 	}
-	os.MkdirAll(wd+name, 0755)
-	tmpl_, err := os.Create(wd + name + "/" + name + ".tmpl")
+	os.MkdirAll(wd+"autonav", 0755)
+	tmpl_, err := os.Create(wd + "autonav/autonav.tmpl")
 	if err != nil {
 		log.Println(err)
 	}
 
-	autonav_create(name, tmpl_, []string{"test1"})
+	autonav_create("autonav", tmpl_, strings.Split(sections, ","))
+	insertcomponent("autonav")
 }
 
 func autonav_create(name string, tmpl_ *os.File, sections []string) {
 	wd := "internal/components/"
 	var navListHTML string
 	for _, section := range sections {
+		createComponent(section)
+		insertcomponent(section)
 		navListHTML = navListHTML + `<li onclick="jumpTo('section-` +
 			section + `')">` + section + `</li>` + "\n"
 	}
@@ -90,9 +94,7 @@ function tf() {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    align-content: space-around;
     justify-content: space-evenly;
-    align-items: stretch;
     margin-right: 2em;
     padding: 0.5em;
 }
@@ -105,9 +107,7 @@ function tf() {
 
 .navbar-outer {
     display: inline-flex;
-    font-weight: bold;
     font-size: 1.1em;
-    /* padding-bottom: 1em; */
     position: fixed;
     background: chocolate;
     top: 0;
@@ -115,9 +115,8 @@ function tf() {
     width: 100vw;
     flex-direction: row;
     flex-wrap: nowrap;
-    /* align-content: space-between; */
     justify-content: space-between;
-    animation: 0.9s linear navbar-load;;
+    animation: 0.2s linear navbar-load;;
     z-index: 101010101010;
 }
 

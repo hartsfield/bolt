@@ -27,6 +27,8 @@ func create(name, structure string) {
 		log.Println(err)
 	}
 	tmpl_.WriteString(`{{ define "` + name + `.tmpl" }}` + "\n" +
+		`<div class="section-outer ` + name + `-outer section-` + name + `" id="section-` + name + `">` + "\n" +
+		`</div>` + "\n" +
 		`<style>{{ template "` + name + `.css" }}</style>` + "\n" +
 		`<script>{{ template "` + name + `.js"}}</script>` + "\n" +
 		`{{end}}`)

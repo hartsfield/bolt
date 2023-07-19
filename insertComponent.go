@@ -1,39 +1,63 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"strings"
 )
 
 func insertcomponent(component string) {
-	f, err := os.OpenFile("internal/pages/main/main.tmpl", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
+	filePath := "internal/pages/main/main.tmpl"
+	templateDirectives := []string{`    {{template "` + component + `.tmpl" . }}`}
+	readFile, err := os.Open(filePath)
+
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+	}
+	fileScanner := bufio.NewScanner(readFile)
+	fileScanner.Split(bufio.ScanLines)
+	var lines []string
+
+	for fileScanner.Scan() {
+		lines = append(lines, fileScanner.Text())
 	}
 
-	defer f.Close()
+	readFile.Close()
 
-	var b []byte
-	_, err = f.Read(b)
+	for _, l := range lines {
+		fmt.Println(l)
+		if strings.Contains(l, "{{") {
+			if !strings.Contains(l, ` "head" .`) && !strings.Contains(l, "end") {
+				templateDirectives = append(templateDirectives, l)
+			}
+		}
+	}
+
+	f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	final := `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+{{template "head" . }} 
+  <body>`
+
+	for k, d := range templateDirectives {
+		final = final + "\n" + d
+		if k == len(templateDirectives)-1 {
+			final = final + "\n  </body>\n</html>"
+		}
+	}
+	log.Println(final)
+
+	_, err = f.WriteString(final)
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(string(b))
-
-	lines := strings.Split(string(b), "\n")
-	for k, l := range lines {
-		log.Println(l)
-		if strings.Contains(l, "footer") {
-			var temp []string = append(lines[:k], `{{template "`+component+`"}}`)
-			lines = append(temp, lines[k:]...)
-		}
-	}
-
-	for _, l := range lines {
-		log.Println(l)
-		if _, err = f.WriteString(l); err != nil {
-			panic(err)
-		}
+	if err := f.Close(); err != nil {
+		log.Fatal(err)
 	}
 }

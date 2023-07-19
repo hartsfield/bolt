@@ -15,6 +15,11 @@ func deploy(proxconfig string) {
 	checkInsert(pc[0], pc[1], pc[2], pc[3])
 }
 
+func remoteServiceRestart(name string) {
+	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
+	log.Println(cloudCommand([]string{"cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &"}))
+}
+
 func localCommand(command []string) string {
 	cmd := exec.Command(command[0], command[1:]...)
 	o, err := cmd.CombinedOutput()
@@ -33,6 +38,11 @@ func cloudCommand(command []string) string {
 		log.Println(err)
 	}
 	return string(o)
+}
+
+func getServicePort(name string) string {
+	servicePort := cloudCommand([]string{"cat ~/prox.conf | grep " + name + " | cut -d: -f1"})
+	return servicePort
 }
 
 func checkInsert(name, port, hasTLS, alertsOn string) {
