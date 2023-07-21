@@ -68,6 +68,26 @@ To automatically create a navigation bar using bolt, run the following:
 Now visit `localhost:9001` and you should see the following:
 
 ![Screenshot from 2023-07-21 19-28-08](https://github.com/hartsfield/bolt/assets/30379836/51c8d948-e086-4d4c-bb90-67f1590b8030)
-    
 
-Components are stored in `/internal/components`
+This command generated a navigation bar, and three components. These 
+components are also added to main `page`. The sections have no content yet, so 
+can't be seen, but the boiler plate code to begin their creation has been 
+generated.
+
+Components are stored in `internal/components`, and are composed of three files,
+one for javascript, another for css, and a .tmpl file which is html with golang 
+template directives.
+
+    > .
+         ├── internal
+         │   ├── components
+         │   │   ├── footer
+         │   │   │   ├── footer.css
+         │   │   │   ├── footer.js
+         │   │   │   └── footer.tmpl
+
+
+Once a component is created, it must then be added to a `page` by specifying it 
+in a template directive.
+
+
