@@ -2,9 +2,10 @@
 
 # BOLT
 
-Bolt is a go program that generates the scaffolding for a web app using a 
-component based architecture. It also generates server code and other files that
-are useful for rapid prototyping and development.
+Bolt is a Go program that generates the scaffolding for a web app using a 
+component based architecture, and generates server code and other files that
+are useful for rapid prototyping and development. Bolt also has other features
+useful for rapid development. 
 
 NOTE: Bolt is under heavy development and is still considered beta. 
 
@@ -59,5 +60,14 @@ command:
 Visit `localhost:9001` in your web browser and you should see the following:
 
 ![Screenshot from 2023-07-21 19-07-26](https://github.com/hartsfield/bolt/assets/30379836/832f4789-9212-4af9-9d00-594043bfaa41)
+
+To automatically create a navigation bar using bolt, run the following:
+
+    bolt --autonav=section1,section2,section3
+
+Now visit `localhost:9001` and you should see the following:
+
+![Screenshot from 2023-07-21 19-28-08](https://github.com/hartsfield/bolt/assets/30379836/51c8d948-e086-4d4c-bb90-67f1590b8030)
+    
 
 Components are stored in `/internal/components`
