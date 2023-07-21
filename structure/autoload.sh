@@ -1,6 +1,4 @@
 #!/bin/bash
-servicePort=5654
-logFilePath=./logfile.txt
-pkill -9 $1
+pkill -f $1
 go build -o $1
-servicePort=5652 logFilePath=./logfile.txt ./$1 & 
+servicePort=$2 logFilePath=./logfile.txt ./$1 & 
