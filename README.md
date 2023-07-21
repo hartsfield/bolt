@@ -1,3 +1,5 @@
+![Untitled drawing (4)](https://github.com/hartsfield/bolt/assets/30379836/b551f0d4-53e5-4309-b7d7-9fc26b7eaa76)
+
 # BOLT
 
 Bolt is a go program that generates the scaffolding for a web app using a 
