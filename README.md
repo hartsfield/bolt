@@ -12,6 +12,13 @@ bolt can be used to build single-page static websites, but in the future, bolt
 will be able to aid in the development of large dynamic websites, and also help
 generate code for forms and database models. 
 
+Goals:
+ - Generate basic scaffolding to begin building a webapp
+ - Tooling to speed up the process of creating generic web components
+ - Convert data modeled in CSV into code for forms and basic database procedures
+ - Install components from third party git repos
+ - deploy to testing server
+
 Create a directory called `boltApp` and `cd boltApp` and run the command:
 
     bolt --init
