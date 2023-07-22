@@ -8,7 +8,7 @@ are useful for rapid prototyping and development. Bolt also has other features
 useful for rapid development. 
 
 NOTE: Bolt is under heavy development and is still considered beta. Currently 
-bolt can be used to build single-age static websites, but in the future, bolt 
+bolt can be used to build single-page static websites, but in the future, bolt 
 will be able to aid in the development of large dynamic websites, and also help
 generate code for forms and database models. 
 
