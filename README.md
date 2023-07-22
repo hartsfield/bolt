@@ -76,7 +76,7 @@ Now visit `localhost:9001` and you should see the following:
 ![Screenshot from 2023-07-21 19-28-08](https://github.com/hartsfield/bolt/assets/30379836/51c8d948-e086-4d4c-bb90-67f1590b8030)
 
 This command generated a navigation bar, and three components. These 
-components are also added to main `page`. The sections have no content yet, so 
+components are also added to the main `page`. The sections have no content yet, so 
 can't be seen, but the boiler plate code to begin their creation has been 
 generated.
 
