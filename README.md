@@ -105,3 +105,18 @@ template directives.
 
 Once a component is created, it must then be added to a `page` by specifying it 
 in a template directive.
+
+Now lets add a splash page to our website:
+
+    bolt --autosplash=test.jpg
+
+This command will generate a splash page with the `companyName` shown in front 
+of `test.jpg`. Place an image named `test.jpg` in `public/media`, and you should 
+see the following:
+
+You can generate a new, empty component, called `test1` with the following 
+command:
+
+    bolt --new-component=test1
+
+
