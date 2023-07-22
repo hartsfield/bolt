@@ -16,7 +16,7 @@ Create a directory called `boltApp` and `cd boltApp` and run the command:
 
     bolt --init
 
-The scaffolding for a new web app will be generated.
+This command will generate the scaffolding for a new web app.
 
 The structure of a bolt app looks like this:
 
