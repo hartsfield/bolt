@@ -9,7 +9,7 @@ useful for rapid development.
 
 NOTE: Bolt is under heavy development and is still considered beta. 
 
-Create a directory call `boltApp` and `cd boltApp` and run the command:
+Create a directory called `boltApp` and `cd boltApp` and run the command:
 
     bolt --init
 
