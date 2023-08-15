@@ -104,6 +104,8 @@ func init() {
 	fMap["init"] = &stringFlag{do: boltInit}
 	// fMap["install-component"] = &stringFlag{do: installComponent}
 	fMap["new-component"] = &stringFlag{do: createComponent}
+	fMap["build-range"] = &stringFlag{do: buildRange}
+	fMap["build-form"] = &stringFlag{do: buildForm}
 	fMap["add-page"] = &stringFlag{}
 	fMap["new-page"] = &stringFlag{do: createPage}
 	fMap["add-style"] = &stringFlag{do: addStyle}
@@ -113,8 +115,12 @@ func init() {
 	fMap["autosplash"] = &stringFlag{do: autosplash}
 	fMap["insert-component"] = &stringFlag{do: insertcomponent}
 	fMap["remote-service-restart"] = &stringFlag{do: remoteServiceRestart}
+	fMap["genstruct"] = &stringFlag{do: genStruct}
 
 	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
+	flag.Var(fMap["genstruct"], "genstruct", "Genrates a structure based on input")
+	flag.Var(fMap["build-form"], "build-form", "Genrates an HTML form based on input")
+	flag.Var(fMap["build-range"], "build-range", "Genrates an HTML range")
 	flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
 	flag.Var(fMap["insert-component"], "insert-component", "Inserts a new component into a page")
 	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")

@@ -19,6 +19,8 @@ Goals:
  - Install components from third party git repos
  - deploy to testing server
 
+![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
+
 Create a directory called `boltApp` and `cd boltApp` and run the command:
 
     bolt --init
