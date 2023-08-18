@@ -1,4 +1,3 @@
-![Untitled drawing (4)](https://github.com/hartsfield/bolt/assets/30379836/b551f0d4-53e5-4309-b7d7-9fc26b7eaa76)
 
 # BOLT
 
@@ -122,3 +121,4 @@ command:
     bolt --new-component=test1
 
 
+![Untitled drawing (4)](https://github.com/hartsfield/bolt/assets/30379836/b551f0d4-53e5-4309-b7d7-9fc26b7eaa76)
