@@ -75,8 +75,8 @@ var (
 	logging_go_tmpl string
 	//go:embed structure/main.go
 	main_go_tmpl string
-	//go:embed structure/restart-service.sh
-	rssh_tmpl string
+	//go:embed structure/router.go
+	router_tmpl string
 	//go:embed structure/server.go
 	server_go_tmpl string
 	//go:embed structure/bolt_conf.json
@@ -116,8 +116,10 @@ func init() {
 	fMap["insert-component"] = &stringFlag{do: insertcomponent}
 	fMap["remote-service-restart"] = &stringFlag{do: remoteServiceRestart}
 	fMap["genstruct"] = &stringFlag{do: genStruct}
+	fMap["new-route"] = &stringFlag{do: newRoute}
 
 	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
+	flag.Var(fMap["new-route"], "new-route", "Initializes a new route")
 	flag.Var(fMap["genstruct"], "genstruct", "Genrates a structure based on input")
 	flag.Var(fMap["build-form"], "build-form", "Genrates an HTML form based on input")
 	flag.Var(fMap["build-range"], "build-range", "Genrates an HTML range")
@@ -289,11 +291,11 @@ func boltInit(appName string) {
 	}
 	dockerfile.WriteString(docker_tmpl)
 
-	rs_sh, err := os.Create(appdir + "restart-service.sh")
+	router, err := os.Create(appdir + "router.go")
 	if err != nil {
 		log.Println(err)
 	}
-	rs_sh.WriteString(rssh_tmpl)
+	router.WriteString(router_tmpl)
 
 	cmd := exec.Command("tree", "-C", "--dirsfirst", ".")
 	b, err := cmd.Output()
