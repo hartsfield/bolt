@@ -1,3 +1,4 @@
+![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
 
 # BOLT
 
@@ -37,7 +38,6 @@ generate code for forms and database models.
  - Convert data modeled in CSV into code for forms and basic database procedures
  - Install components from third party git repos
 
-![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
 
 The structure of a bolt app looks like this:
 
