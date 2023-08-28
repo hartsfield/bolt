@@ -30,14 +30,12 @@ generate code for forms and database models.
         $ bolt --new-route=path,handlerName
 
  - Routes can be registered manually in `router.go`
- - Components
 
 Goals:
- - Generate basic scaffolding to begin building a webapp
+ - Generate basic scaffolding to begin building a web app
  - Tooling to speed up the process of creating generic web components
  - Convert data modeled in CSV into code for forms and basic database procedures
  - Install components from third party git repos
- - deploy to testing server
 
 ![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
 
