@@ -28,7 +28,10 @@ generate code for forms and database models.
 
         $ bolt --new-route=path,handlerName
  - Routes can be registered manually in `router.go`
-Goals:
+
+# More info
+
+## Features in progress
  - Generate basic scaffolding to begin building a web app
  - Tooling to speed up the process of creating generic web components
  - Convert data modeled in CSV into code for forms and basic database procedures
