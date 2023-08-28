@@ -1,3 +1,5 @@
+# BOLT ARCHITECTURE - Component based Model-View-Controller (MVC)
+
 ![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
 
 # BOLT
