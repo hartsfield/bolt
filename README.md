@@ -24,6 +24,7 @@ generate code for forms and database models.
         $ mkdir boltapp
         $ cd boltapp
         $ bolt
+        $ go mod init example.com/m/v2 && go mod tidy
  - Create a component and insert it into the main page:
         
         $ bolt --new-component=test && bolt --insert-component=test
