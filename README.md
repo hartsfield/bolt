@@ -21,17 +21,13 @@ generate code for forms and database models.
         $ mkdir boltapp
         $ cd boltapp
         $ bolt
-
  - Create a component and insert it into the main page:
         
         $ bolt --new-component=test && bolt --insert-component=test
-
  - Add a new route and handler:
 
         $ bolt --new-route=path,handlerName
-
  - Routes can be registered manually in `router.go`
-
 Goals:
  - Generate basic scaffolding to begin building a web app
  - Tooling to speed up the process of creating generic web components
