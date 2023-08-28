@@ -1,8 +1,8 @@
-# BOLT ARCHITECTURE - Component based Model-View-Controller (MVC)
+# What is BOLT ARCHITECTURE? - A Component based Model-View-Controller (MVC) framework
 
 ![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
 
-# BOLT
+# BOLT (Go program for building apps using the BOLT architecture)
 
 Bolt is not a third-party dependency, `bolt` is a Go program that generates the 
 scaffolding for a web app using a component based model-view-controller 
