@@ -1,10 +1,12 @@
 
 # BOLT
 
-Bolt is a Go program that generates the scaffolding for a web app using a 
-component based architecture, and generates server code and other files that
-are useful for rapid prototyping and development. Bolt also has other features
-useful for rapid development. 
+Bolt is not a third-party dependency, `bolt` is a Go program that generates the 
+scaffolding for a web app using a component based architecture, and generates 
+server code and other files that are useful for rapid prototyping and 
+development. Bolt also has other features useful for rapid development. 
+
+Bolt has no third-party dependencies. 
 
 NOTE: Bolt is under heavy development and is still considered beta. Currently 
 bolt can be used to build single-page static websites, but in the future, bolt 

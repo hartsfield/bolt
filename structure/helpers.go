@@ -5,8 +5,6 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-
-	"github.com/redis/go-redis/v9"
 )
 
 // exeTmpl is used to build and execute an html template.
@@ -39,12 +37,4 @@ func genPostID(length int) (ID string) {
 		ID += symbols[s : s+1]
 	}
 	return
-}
-
-// makeZmem returns a redis Z member for use in a ZSET. Score is set to zero
-func makeZmem(st string) redis.Z {
-	return redis.Z{
-		Member: st,
-		Score:  0,
-	}
 }
