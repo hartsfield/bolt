@@ -13,6 +13,25 @@ bolt can be used to build single-page static websites, but in the future, bolt
 will be able to aid in the development of large dynamic websites, and also help
 generate code for forms and database models. 
 
+## Quickstart
+
+ - Create a bolt app:
+ 
+        $ mkdir boltapp
+        $ cd boltapp
+        $ bolt
+
+ - Create a component and insert it into the main page:
+        
+        $ bolt --new-component=test && bolt --insert-component=test
+
+ - Add a new route and handler:
+
+        $ bolt --new-route=path,handlerName
+
+ - Routes can be registered manually in `router.go`
+ - Components
+
 Goals:
  - Generate basic scaffolding to begin building a webapp
  - Tooling to speed up the process of creating generic web components
@@ -21,12 +40,6 @@ Goals:
  - deploy to testing server
 
 ![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
-
-Create a directory called `boltApp` and `cd boltApp` and run the command:
-
-    bolt --init
-
-This command will generate the scaffolding for a new web app.
 
 The structure of a bolt app looks like this:
 
