@@ -2,7 +2,7 @@
 
 ![bolt architecture](https://github.com/hartsfield/bolt/assets/30379836/b1f68fc2-b418-4bbf-b2aa-3575165d77cb)
 
-# BOLT (Go program for building apps using the BOLT architecture)
+# What is the BOLT PROGRAM? bolt is a Go program for building apps using the BOLT architecture
 
 Bolt is not a third-party dependency, `bolt` is a Go program that generates the 
 scaffolding for a web app using a component based model-view-controller 
