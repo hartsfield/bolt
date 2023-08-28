@@ -17,6 +17,9 @@ bolt can be used to build single-page static websites, but in the future, bolt
 will be able to aid in the development of large dynamic websites, and also help
 generate code for forms and database models. 
 
+Actually I'm already using bolt to build [TagMachine](https://github.com/hartsfield/machinetag),
+a dynamic social media platform.
+
 ## Quickstart
 
  - Create a bolt app:
