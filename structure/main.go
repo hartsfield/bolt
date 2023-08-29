@@ -14,14 +14,13 @@ func init() {
 
 func main() {
 	if len(logFilePath) > 1 {
-		logFile := setupLogging()
-		defer logFile.Close()
+		setupLogging()
 	}
 
 	ctx, srv := bolt()
 
-	fmt.Println("Server started @ http://localhost" + srv.Addr)
-	log.Println("Server started @ " + srv.Addr)
+	fmt.Println("Waiting for connections @ http://localhost" + srv.Addr)
+	log.Println("Waiting for connections @ http://localhost" + srv.Addr)
 
 	<-ctx.Done()
 }

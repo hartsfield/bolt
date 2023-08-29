@@ -51,13 +51,13 @@ func (sf *stringFlag) String() string {
 
 // embed the file templates
 var (
-	//go:embed structure/internal/shared/css/main.css
+	//go:embed structure/internal/shared/head/head.css
 	css_shared string
-	//go:embed structure/internal/shared/js/main.js
+	//go:embed structure/internal/shared/head/head.js
 	js_shared string
 	//go:embed structure/internal/pages/main/main.tmpl
 	page_tmpl string
-	//go:embed structure/internal/components/head/head.tmpl
+	//go:embed structure/internal/shared/head/head.tmpl
 	head_tmpl string
 	//go:embed structure/internal/components/footer/footer.tmpl
 	foot_tmpl string
@@ -65,8 +65,8 @@ var (
 	foot_css string
 	//go:embed structure/internal/components/footer/footer.js
 	foot_js string
-	//go:embed structure/Dockerfile
-	docker_tmpl string
+	////go:embed structure/Dockerfile
+	//docker_tmpl string
 	//go:embed structure/handlers.go
 	handlers_go_tmpl string
 	//go:embed structure/helpers.go
@@ -284,12 +284,17 @@ func boltInit(appName string) {
 		log.Println(err)
 	}
 	autoloadSh.WriteString(globals_autoload_sh)
-
-	dockerfile, err := os.Create(appdir + "Dockerfile")
+	err = os.Chmod(autoloadSh.Name(), 0755)
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
+		return
 	}
-	dockerfile.WriteString(docker_tmpl)
+
+	// dockerfile, err := os.Create(appdir + "Dockerfile")
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	// dockerfile.WriteString(docker_tmpl)
 
 	router, err := os.Create(appdir + "router.go")
 	if err != nil {
@@ -302,6 +307,8 @@ func boltInit(appName string) {
 	if err != nil {
 		log.Println(err)
 	}
+	log.Println("\n", localCommand([]string{"go", "mod", "init", "example.com/m/v2"}))
+	// log.Println(localCommand([]string{"go", "mod", "tidy"}))
 	fmt.Print("\n    > ", strings.ReplaceAll(string(b), "\n", "\n         "))
 
 	fmt.Println("\n    ##############################\n    # > Initialization complete. #\n    ##############################")

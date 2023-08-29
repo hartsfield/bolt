@@ -9,8 +9,8 @@ import (
 )
 
 func bolt() (ctx context.Context, srv *http.Server) {
-	template.Must(templates.ParseGlob("internal/pages/*/*"))
 	template.Must(templates.ParseGlob("internal/components/*/*"))
+	template.Must(templates.ParseGlob("internal/pages/*/*"))
 	template.Must(templates.ParseGlob("internal/shared/*/*"))
 
 	var mux *http.ServeMux = http.NewServeMux()
@@ -21,9 +21,8 @@ func bolt() (ctx context.Context, srv *http.Server) {
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	go func() {
-		err := srv.ListenAndServe()
-		if err != nil {
-			log.Println(err)
+		if err := srv.ListenAndServe(); err != nil {
+			log.Panicln(err)
 		}
 		cancelCtx()
 	}()
