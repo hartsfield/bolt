@@ -2,17 +2,12 @@ package main
 
 import (
 	"context"
-	"html/template"
 	"log"
 	"net/http"
 	"time"
 )
 
 func bolt() (ctx context.Context, srv *http.Server) {
-	template.Must(templates.ParseGlob("internal/components/*/*"))
-	template.Must(templates.ParseGlob("internal/pages/*/*"))
-	template.Must(templates.ParseGlob("internal/shared/*/*"))
-
 	var mux *http.ServeMux = http.NewServeMux()
 	registerRoutes(mux)
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))

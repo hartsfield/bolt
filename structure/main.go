@@ -1,7 +1,7 @@
 package main // viewData represents the root model used to dynamically update the app
 
 import (
-	"fmt"
+	"html/template"
 	"log"
 	"math/rand"
 	"time"
@@ -10,16 +10,19 @@ import (
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	rand.Seed(time.Now().UTC().UnixNano())
+	template.Must(templates.ParseGlob("internal/pages/*/*"))
+	template.Must(templates.ParseGlob("internal/shared/*/*"))
+	template.Must(templates.ParseGlob("internal/components/*/*"))
 }
 
 func main() {
 	if len(logFilePath) > 1 {
-		setupLogging()
+		f := setupLogging()
+		defer f.Close()
 	}
 
 	ctx, srv := bolt()
 
-	fmt.Println("Waiting for connections @ http://localhost" + srv.Addr)
 	log.Println("Waiting for connections @ http://localhost" + srv.Addr)
 
 	<-ctx.Done()

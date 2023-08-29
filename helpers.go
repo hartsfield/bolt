@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -104,4 +105,34 @@ func exists(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err
+}
+
+// func getServicePort(name string) string {
+// 	servicePort := cloudCommand([]string{"cat ~/prox.conf | grep " + name + " | cut -d: -f1"})
+// 	return servicePort
+// }
+
+// func remoteServiceRestart(name string) {
+// 	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
+// 	log.Println(cloudCommand([]string{"cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &"}))
+// }
+
+func localCommand(command []string) string {
+	cmd := exec.Command(command[0], command[1:]...)
+	o, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Println(err)
+	}
+	return string(o)
+}
+
+func cloudCommand(command []string) string {
+	args := []string{`compute`, `ssh`, `--zone`, `us-central1-a`, `instance-2`, `--project`, `mysterygift`, `--`}
+	args = append(args, command...)
+	cmd := exec.Command(`gcloud`, args...)
+	o, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Println(err)
+	}
+	return string(o)
 }

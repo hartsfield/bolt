@@ -109,7 +109,6 @@ func init() {
 	fMap["add-page"] = &stringFlag{}
 	fMap["new-page"] = &stringFlag{do: createPage}
 	fMap["add-style"] = &stringFlag{do: addStyle}
-	fMap["genscript"] = &stringFlag{do: genscript}
 	fMap["deploy"] = &stringFlag{do: deploy}
 	fMap["autonav"] = &stringFlag{do: autonav}
 	fMap["autosplash"] = &stringFlag{do: autosplash}
@@ -129,7 +128,6 @@ func init() {
 	flag.Var(fMap["autosplash"], "autosplash", "Initializes a splash screen component")
 	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
 	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
-	flag.Var(fMap["genscript"], "genscript", "Creates a new project initilization script")
 	flag.Var(fMap["new-component"], "new-component", "Initializes a new component with the given name")
 	flag.Var(fMap["add-page"], "add-page", "Installs a page template from a remote git repository")
 	flag.Var(fMap["new-page"], "new-page", "Initializes a new page with the given name")

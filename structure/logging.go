@@ -12,8 +12,6 @@ func setupLogging() (f *os.File) {
 		log.Fatalf("error opening file: %v", err)
 	}
 
-	defer f.Close()
-
 	log.SetOutput(f)
 
 	return
