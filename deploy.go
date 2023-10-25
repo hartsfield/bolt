@@ -5,8 +5,7 @@ import (
 	"strings"
 )
 
-func deploy(proxconfig string) {
-	pc := strings.Split(proxconfig, " ")
+func deploy(pc []string) {
 	localCommand([]string{"git", "init"})
 	localCommand([]string{"git", "add", "."})
 	localCommand([]string{"git", "commit", "-m", `"deployment"`})

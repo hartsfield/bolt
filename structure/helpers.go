@@ -10,9 +10,10 @@ import (
 // exeTmpl is used to build and execute an html template.
 func exeTmpl(w http.ResponseWriter, r *http.Request, view *viewData, tmpl string) {
 	if view == nil {
-		view = &viewData{}
+		view = &viewData{
+			AppName: AppName,
+		}
 	}
-	view.CompanyName = companyName
 	err := templates.ExecuteTemplate(w, tmpl, view)
 	if err != nil {
 		log.Println(err)

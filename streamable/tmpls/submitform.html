@@ -1,0 +1,35 @@
+<script>
+    async function submitPost() {
+        const form = document.getElementById("uploadForm");
+        const data = new FormData(form);
+        let response = await fetch("/uploadItem", {
+            method: "POST",
+            body: data,
+        });
+
+        let res = await response.json();
+        handleResponse(res);
+    }
+
+    function handleResponse(res) {
+        if (res.success == "true") {
+            console.log(JSON.parse(res.item))
+                <!-- window.location = window.location.origin + "/itemView/" + res.replyID; -->
+        } else {
+            document.getElementById("errorField").innerHTML = res.error;
+        }
+    }
+</script>
+<form id='uploadForm' enctype='multipart/form-data'>
+    {{- range $k, $v :=  .Items }}
+    {{- if eq $v "textarea" }}
+    <textarea id='{{$k}}' type='text' name='{{$k}}' placeholder='{{$k}}'></textarea>
+    {{- else if eq $v "file" }}
+    <input id='{{$k}}' type='file' name='{{$k}}'/>
+    {{- else }}
+    <{{$v}} id='{{$k}}' type='text' name='{{$k}}'  placeholder='{{$k}}'/>
+    {{- end }}
+    {{- end}}
+    <div onclick="submitPost()" value="submit" >submit</div>
+</form>
+{{ .StreamDirective }}

@@ -10,9 +10,7 @@ import (
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	rand.Seed(time.Now().UTC().UnixNano())
-	template.Must(templates.ParseGlob("internal/pages/*/*"))
-	template.Must(templates.ParseGlob("internal/shared/*/*"))
-	template.Must(templates.ParseGlob("internal/components/*/*"))
+	template.Must(templates.ParseGlob("internal/*/*/*"))
 }
 
 func main() {

@@ -14,6 +14,6 @@ const ctxkey ckey = iota
 var (
 	servicePort                    = ":" + os.Getenv("servicePort")
 	logFilePath                    = os.Getenv("logFilePath")
-	templates   *template.Template = template.New("main")
-	companyName string             = "BoltApp"
+	templates   *template.Template = template.New("")
+	AppName     string             = "BoltApp"
 )

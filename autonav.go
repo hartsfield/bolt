@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 )
 
-func autonav(sections string) {
+func autonav(params []string) {
 	wd := "internal/components/"
 	ex, err := exists(wd + "autonav")
 	if err != nil || ex {
@@ -15,28 +14,27 @@ func autonav(sections string) {
 		os.Exit(0)
 	}
 	os.MkdirAll(wd+"autonav", 0755)
-	tmpl_, err := os.Create(wd + "autonav/autonav.tmpl")
+	tmpl_, err := os.Create(wd + "autonav/autonav.html")
 	if err != nil {
 		log.Println(err)
 	}
 
-	autonav_create("autonav", tmpl_, strings.Split(sections, ","))
-	insertcomponent("autonav")
+	autonav_create("autonav", tmpl_, params)
+	insertcomponent([]string{"autonav"})
 }
 
 func autonav_create(name string, tmpl_ *os.File, sections []string) {
 	wd := "internal/components/"
 	var navListHTML string
 	for _, section := range sections {
-		createComponent(section)
-		insertcomponent(section)
+		createComponent([]string{section})
+		insertcomponent([]string{section})
 		navListHTML = navListHTML + `<li onclick="jumpTo('section-` +
 			section + `')">` + section + `</li>` + "\n"
 	}
 
-	tmpl_.WriteString(`{{ define "` + name + `.tmpl" }}
-<div class="navbar-outer">
-  <div class="logo-nav" onclick="window.location = window.location.origin">{{ .CompanyName }}</div>
+	tmpl_.WriteString(`<div class="navbar-outer">
+  <div class="logo-nav" onclick="window.location = window.location.origin">{{ .AppName }}</div>
 
   <div class="nav-landscape">
     <ul>
@@ -45,7 +43,7 @@ func autonav_create(name string, tmpl_ *os.File, sections []string) {
   </div>
 
   <div class="nav-portrait" id="nav-portrait">
-    <div class="nav-portrait-logo">{{ .CompanyName }}</div>
+    <div class="nav-portrait-logo">{{ .AppName }}</div>
     <ul>
     ` + "\n" + navListHTML + `
     </ul>
@@ -60,15 +58,13 @@ func autonav_create(name string, tmpl_ *os.File, sections []string) {
 </div>
 
 <style>{{ template "` + name + `.css" }}</style>
-<script>{{ template "` + name + `.js"}}</script>
-{{end}}`)
+<script>{{ template "` + name + `.js"}}</script>`)
 	js_, err := os.Create(wd + name + "/" + name + ".js")
 	if err != nil {
 		log.Println(err)
 	}
 	js_.WriteString(
-		`{{ define "` + name + `.js"}}
-let np = document.getElementById("nav-portrait");
+		`let np = document.getElementById("nav-portrait");
 np.style.position = "absolute";
 np.style.right = "-" + np.offsetWidth + "px";
 function showNavPortrait() {
@@ -81,16 +77,14 @@ function showNavPortrait() {
 function tf() {
     np.style.right = "-" + np.offsetWidth + "px";
     document.removeEventListener('click', tf);
-}
-{{end}}`)
+}`)
 
 	css_, err := os.Create(wd + name + "/" + name + ".css")
 	if err != nil {
 		log.Println(err)
 	}
 	css_.WriteString(
-		`{{ define "` + name + `.css"}}
-.ham-outer {
+		`.ham-outer {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -195,6 +189,5 @@ function tf() {
     0% {transform: translateY(-3em);}
     90% {transform: translateY(-3em);}
     100% {transform: translateY(0);}
-}
-{{end}}`)
+}`)
 }

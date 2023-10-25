@@ -10,6 +10,7 @@ import (
 func bolt() (ctx context.Context, srv *http.Server) {
 	var mux *http.ServeMux = http.NewServeMux()
 	registerRoutes(mux)
+
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
 	srv = serverFromConf(mux)

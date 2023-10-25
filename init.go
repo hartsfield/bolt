@@ -37,8 +37,23 @@ type gcloud struct {
 type stringFlag struct {
 	set   bool
 	value string
-	do    func(string)
+	do    func([]string)
 }
+
+// type funcany[T any] func(doAny)
+
+// type doAny struct {
+// 	FileName       string
+// 	FileData       string
+// 	ComponentName  string
+// 	PageName       string
+// 	Sections       []string
+// 	AutoSplashName string
+// 	ProxConfig     string
+// 	RouteName      string
+// 	HandlerName    string
+// 	AppName        string
+// }
 
 func (sf *stringFlag) Set(x string) error {
 	sf.value = x
@@ -55,16 +70,10 @@ var (
 	css_shared string
 	//go:embed structure/internal/shared/head/head.js
 	js_shared string
-	//go:embed structure/internal/pages/main/main.tmpl
+	//go:embed structure/internal/pages/main/main.html
 	page_tmpl string
-	//go:embed structure/internal/shared/head/head.tmpl
+	//go:embed structure/internal/shared/head/head.html
 	head_tmpl string
-	//go:embed structure/internal/components/footer/footer.tmpl
-	foot_tmpl string
-	//go:embed structure/internal/components/footer/footer.css
-	foot_css string
-	//go:embed structure/internal/components/footer/footer.js
-	foot_js string
 	////go:embed structure/Dockerfile
 	//docker_tmpl string
 	//go:embed structure/handlers.go
@@ -87,6 +96,10 @@ var (
 	globals_go_tmpl string
 	//go:embed structure/autoload.sh
 	globals_autoload_sh string
+	//go:embed streamable/tmpls/submitform.html
+	globals_streamable_html string
+	//go:embed streamable/tmpls/submithandler.go
+	globals_streamable_go string
 )
 
 // other globals
@@ -102,36 +115,32 @@ func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	fMap["init"] = &stringFlag{do: boltInit}
-	// fMap["install-component"] = &stringFlag{do: installComponent}
-	fMap["new-component"] = &stringFlag{do: createComponent}
-	fMap["build-range"] = &stringFlag{do: buildRange}
-	fMap["build-form"] = &stringFlag{do: buildForm}
-	fMap["add-page"] = &stringFlag{}
 	fMap["new-page"] = &stringFlag{do: createPage}
-	fMap["add-style"] = &stringFlag{do: addStyle}
+	fMap["new-component"] = &stringFlag{do: createComponent}
+	fMap["new-route"] = &stringFlag{do: newRoute}
+	fMap["insert-component"] = &stringFlag{do: insertcomponent}
+	fMap["streamable"] = &stringFlag{do: genStream}
 	fMap["deploy"] = &stringFlag{do: deploy}
 	fMap["autonav"] = &stringFlag{do: autonav}
 	fMap["autosplash"] = &stringFlag{do: autosplash}
-	fMap["insert-component"] = &stringFlag{do: insertcomponent}
-	fMap["remote-service-restart"] = &stringFlag{do: remoteServiceRestart}
-	fMap["genstruct"] = &stringFlag{do: genStruct}
-	fMap["new-route"] = &stringFlag{do: newRoute}
 
-	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
+	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
+	flag.Var(fMap["new-page"], "new-page", "Initializes a new page with the given name")
+	flag.Var(fMap["new-component"], "new-component", "Initializes a new component with the given name")
 	flag.Var(fMap["new-route"], "new-route", "Initializes a new route")
-	flag.Var(fMap["genstruct"], "genstruct", "Genrates a structure based on input")
-	flag.Var(fMap["build-form"], "build-form", "Genrates an HTML form based on input")
-	flag.Var(fMap["build-range"], "build-range", "Genrates an HTML range")
-	flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
 	flag.Var(fMap["insert-component"], "insert-component", "Inserts a new component into a page")
+	flag.Var(fMap["streamable"], "streamable", "unfinished")
+	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
 	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")
 	flag.Var(fMap["autosplash"], "autosplash", "Initializes a splash screen component")
-	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
-	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
-	flag.Var(fMap["new-component"], "new-component", "Initializes a new component with the given name")
-	flag.Var(fMap["add-page"], "add-page", "Installs a page template from a remote git repository")
-	flag.Var(fMap["new-page"], "new-page", "Initializes a new page with the given name")
-	flag.Var(fMap["add-style"], "add-style", "Adds a style to the stylesheet of the given component, usage: bolt --add-style=component:rulename")
+	// flag.Var(fMap["add-style"], "add-style", "Adds a style to the stylesheet of the given component, usage: bolt --add-style=component:rulename")
+	// flag.Var(fMap["build-range"], "build-range", "Genrates an HTML range")
+	// flag.Var(fMap["genstruct"], "genstruct", "Genrates a structure based on input")
+	// flag.Var(fMap["build-form"], "build-form", "Genrates an HTML form based on input")
+	// flag.Var(fMap["add-page"], "add-page", "Installs a page template from a remote git repository")
+	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
+	// flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
+
 }
 
 func readFlags() {
@@ -140,15 +149,16 @@ func readFlags() {
 	for _, clf := range fMap {
 		if clf.set {
 			noFlagsSet = false
-			clf.do(clf.value)
+			clf.do(strings.Split(clf.value, ","))
 		}
 	}
 	if noFlagsSet {
-		boltInit("")
+		boltInit([]string{""})
 	}
 }
 
-func boltInit(appName string) {
+func boltInit(params []string) {
+	appName := params[0]
 	empty, err := isEmpty(".")
 	if err != nil {
 		log.Fatalln(err)
@@ -180,11 +190,9 @@ func boltInit(appName string) {
 		fmt.Println("\n    > Initializing app in current directory...")
 	}
 
-	os.MkdirAll(appdir+"internal/components/footer", 0755)
-	os.MkdirAll(appdir+"internal/components/head", 0755)
+	os.MkdirAll(appdir+"internal/components", 0755)
 	os.MkdirAll(appdir+"internal/pages/main", 0755)
-	os.MkdirAll(appdir+"internal/shared/css", 0755)
-	os.MkdirAll(appdir+"internal/shared/js", 0755)
+	os.MkdirAll(appdir+"internal/shared/head", 0755)
 	os.MkdirAll(appdir+"public/media", 0755)
 
 	main_go, err := os.Create(appdir + "main.go")
@@ -199,43 +207,25 @@ func boltInit(appName string) {
 	}
 	bctmpl.WriteString(bolt_conf_tmpl)
 
-	ftmpl, err := os.Create(appdir + "internal/components/footer/footer.tmpl")
-	if err != nil {
-		log.Println(err)
-	}
-	ftmpl.WriteString(foot_tmpl)
-
-	fcss, err := os.Create(appdir + "internal/components/footer/footer.css")
-	if err != nil {
-		log.Println(err)
-	}
-	fcss.WriteString(foot_css)
-
-	fjs, err := os.Create(appdir + "internal/components/footer/footer.js")
-	if err != nil {
-		log.Println(err)
-	}
-	fjs.WriteString(foot_js)
-
-	htmpl, err := os.Create(appdir + "internal/components/head/head.tmpl")
+	htmpl, err := os.Create(appdir + "internal/shared/head/head.html")
 	if err != nil {
 		log.Println(err)
 	}
 	htmpl.WriteString(head_tmpl)
 
-	pmain, err := os.Create(appdir + "internal/pages/main/main.tmpl")
+	pmain, err := os.Create(appdir + "internal/pages/main/main.html")
 	if err != nil {
 		log.Println(err)
 	}
 	pmain.WriteString(page_tmpl)
 
-	shcss, err := os.Create(appdir + "internal/shared/css/main.css")
+	shcss, err := os.Create(appdir + "internal/shared/head/head.css")
 	if err != nil {
 		log.Println(err)
 	}
 	shcss.WriteString(css_shared)
 
-	shjs, err := os.Create(appdir + "internal/shared/js/main.js")
+	shjs, err := os.Create(appdir + "internal/shared/head/head.js")
 	if err != nil {
 		log.Println(err)
 	}

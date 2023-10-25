@@ -5,30 +5,29 @@ import (
 	"os"
 )
 
-func autosplash(name string) {
+func autosplash(params []string) {
+	name := params[0]
 	wd := "internal/components/"
-	createComponent("autosplash")
-	insertcomponent("autosplash")
-	tmpl_, err := os.OpenFile(wd+"autosplash/autosplash.tmpl", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
+	createComponent([]string{"autosplash"})
+	insertcomponent([]string{"autosplash"})
+	tmpl_, err := os.OpenFile(wd+"autosplash/autosplash.html", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		log.Println(err)
 	}
-	tmpl_.WriteString(`{{ define "autosplash.tmpl" }}
-<div class="section-outer autosplash-outer">
+	tmpl_.WriteString(`<div class="section-outer autosplash-outer">
   <div class="splash-inner">
-    <div class="splash-logo">{{.CompanyName}}</div>
+    <div class="splash-logo">{{.AppName}}</div>
   </div>
-</div>
 <style>{{ template "autosplash.css" }}</style>
 <script>{{ template "autosplash.js"}}</script>
-{{end}}`)
+</div>
+`)
 
 	css_, err := os.OpenFile(wd+"autosplash/autosplash.css", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		log.Println(err)
 	}
-	css_.WriteString(`{{ define "autosplash.css"}}
-.splash-inner {
+	css_.WriteString(`.splash-inner {
     background-image: url(public/media/` + name + `);
     background-size: cover;
     height: 100vh;
@@ -47,6 +46,5 @@ func autosplash(name string) {
 @keyframes scalein {
   0% {transform: scale(5) rotate(720deg);}
   // 100% {transform: scale(1);}
-}
-{{end}}`)
+}`)
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"log"
@@ -9,11 +10,11 @@ import (
 	"strings"
 )
 
-func createPage(name string) {
-	create(name, "pages")
+func createPage(params []string) {
+	create(params[0], "pages")
 }
-func createComponent(name string) {
-	create(name, "components")
+func createComponent(params []string) {
+	create(params[0], "components")
 }
 func create(name, structure string) {
 	wd := "internal/" + structure + "/"
@@ -23,29 +24,27 @@ func create(name, structure string) {
 		os.Exit(0)
 	}
 	os.MkdirAll(wd+name, 0755)
-	tmpl_, err := os.Create(wd + name + "/" + name + ".tmpl")
+	tmpl_, err := os.Create(wd + name + "/" + name + ".html")
 	if err != nil {
 		log.Println(err)
 	}
-	tmpl_.WriteString(`{{ define "` + name + `.tmpl" }}` + "\n" +
-		`<div class="section-outer ` + name + `-outer section-` + name + `" id="section-` + name + `">` + "\n" +
+	tmpl_.WriteString(`<div class="template-wrapper ` + name +
+		`-outer" id="` + name + `-outer">` + "\n" +
 		`</div>` + "\n" +
 		`<style>{{ template "` + name + `.css" }}</style>` + "\n" +
 		`<script>{{ template "` + name + `.js"}}</script>` + "\n" +
 		`{{end}}`)
 
-	css_, err := os.Create(wd + name + "/" + name + ".css")
+	_, err = os.Create(wd + name + "/" + name + ".css")
 	if err != nil {
 		log.Println(err)
 	}
-	css_.WriteString(`{{ define "` + name + `.css" }}` + "\n" + `{{end}}`)
 
-	js_, err := os.Create(wd + name + "/" + name + ".js")
+	_, err = os.Create(wd + name + "/" + name + ".js")
 	if err != nil {
 		log.Println(err)
 	}
-	js_.WriteString(`{{ define "` + name + `.js" }}` + "\n" + `{{end}}`)
-	fmt.Println("Created:", "\n", wd+name+"/"+name+"{.tmpl,.css,.js}")
+	fmt.Println("Created:", "\n", wd+name+"/"+name+"{.html,.css,.js}")
 }
 func autoList(name string, listItems []string) {}
 func autoFlex(name string)                     {}
@@ -135,4 +134,49 @@ func cloudCommand(command []string) string {
 		log.Println(err)
 	}
 	return string(o)
+}
+func insertLineAfter(filepath, opening, insert, closing string) {
+	f, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE, 0755)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fileScanner := bufio.NewScanner(f)
+
+	var lines []string
+	var curlyCount int = 0
+	var found bool = false
+	for fileScanner.Scan() {
+		t := fileScanner.Text()
+		if strings.Contains(t, opening) {
+			found = true
+			curlyCount = curlyCount + 1
+		}
+		if found {
+			if strings.Contains(t, closing) {
+				curlyCount = curlyCount - 1
+			}
+			if curlyCount == 0 {
+				lines = append(lines, insert)
+				found = false
+			}
+		}
+		lines = append(lines, t)
+	}
+	err = f.Truncate(0)
+	if err != nil {
+		log.Println(err)
+	}
+	_, err = f.Seek(0, 0)
+	if err != nil {
+		log.Println(err)
+	}
+
+	_, err = f.WriteString(strings.Join(lines, "\n"))
+	if err != nil {
+		log.Println(err)
+	}
+	if err := f.Close(); err != nil {
+		log.Fatal(err)
+	}
+
 }
