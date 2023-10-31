@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"log"
 	"os"
 	"strings"
@@ -23,11 +24,15 @@ type data struct {
 	StreamDirective string
 }
 
+var jsn string = `{ "file": ["FileElement"], "text": ["Title","Year","Price"], "textarea": ["About"] }`
+
 func genStream([]string) {
+	err := json.Unmarshal([]byte(jsn), &inputs)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(inputs)
 	var componentName string = "upload"
-	inputs["file"] = append(inputs["file"], "FileElement")
-	inputs["text"] = append(inputs["text"], []string{"Title", "Year", "Price"}...)
-	inputs["textarea"] = append(inputs["textarea"], "About")
 	for elm, names := range inputs {
 		for _, name := range names {
 			switch elm {
@@ -109,16 +114,28 @@ func buildDataStream(ins map[string][]string) string {
 		"\t{{ range $k, $v :=  .Stream }}",
 		"\t\t<div class='item-outer'>",
 	}
+	var mediaElm string
+	var next_lines []string = []string{"<div class='next-lines'>"}
 	for _, in := range ins {
 		for _, name := range in {
-			build = append(build, "\t\t\t<div class='igtem-part "+name+"'>{{ $v."+name+" }}</div>")
+			if name == "FileElement" {
+				mediaElm = "\t\t\t<div class='" +
+					"item-part media-item " + name +
+					"'><img src='{{$v.TempFileName}}'/>{{ $v." +
+					name + " }}</div>"
+			} else {
+				next_lines = append(next_lines, "\t\t\t<div class='item-part "+name+"'>{{ $v."+name+" }}</div>")
+			}
 		}
 	}
+	next_lines = append(next_lines, "</div>")
 	end := []string{
 		"\t\t</div>",
 		"\t{{ end }}",
 		"</div>",
 	}
+	build = append(build, mediaElm)
+	build = append(build, next_lines...)
 	build = append(build, end...)
 	return strings.Join(build, "\n")
 }

@@ -8,17 +8,21 @@ import (
         "bytes"
         "encoding/json"
         "os"
+        "slices"
         "strings"
+        "mime/multipart"
 )
 
-type item struct { 
+type item struct {
         {{- range $k, $v :=  .Inputs }}
         {{- range $k_, $v_ :=  $v }}
         {{ $v_}}{{"\t"}}string{{"\t"}}`json:"{{$v_}}"`
         {{- end }}
-        {{- end }}                             
+        {{- end }}
         ID{{"\t"}}string `json:"ID"`
         TS{{"\t"}}time.Time `json:"TS"`
+        MediaType{{"\t"}}string{{"\t"}}`json:"mediaType"`
+        TempFileName{{"\t"}}string{{"\t"}}`json:"tempFileName"`
 }
 var stream []*item
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,9 +46,12 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
                         data.{{$v_}} = buf.String()
                 }
                 {{- end }}
+                {{else}}
+                if part.FormName() == "{{index $.Inputs "file" 0}}" {
+                        handleFile(w, part, data)
+                }
                 {{- end }}
-                {{- end }}      
-                //if part.FormName() == "{{/* {{index .Inputs "file" 0}} */}}" {}
+                {{- end }}
         }
         stream = append(stream, data)
 
@@ -59,8 +66,48 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
         })
         saveJSON(b)
 }
+func handleFile(w http.ResponseWriter, part *multipart.Part, data *item) {
+        fileBytes, err := io.ReadAll(io.LimitReader(part, 10<<20))
+        if err != nil {
+                log.Println(err)
+        }
+        mt := http.DetectContentType(fileBytes)
+        var fileExtension string
+        switch mt {
+        case "image/png":
+                fileExtension = "png"
+        case "image/jpeg":
+                fileExtension = "jpg"
+        case "image/gif":
+                fileExtension = "gif"
+        case "video/mp4":
+                fileExtension = "mp4"
+        case "video/webm":
+                fileExtension = "webm"
+        default:
+                ajaxResponse(w, map[string]string{
+                        "success": "false",
+                        "replyID": "",
+                        "error":   "png - jpg - gif - webm - mp4 only",
+                })
+                return
+        }
+        tempFile, err := os.CreateTemp("public/temp", "u-*."+fileExtension)
+        if err != nil {
+                log.Println(err)
+        }
+        defer tempFile.Close()
+        data.TempFileName = tempFile.Name()
+        data.MediaType = strings.Split(mt, "/")[0]
+
+        tempFile.Write(fileBytes)
+}
 func init() {
         readDB()
+        err := os.Mkdir("./public/temp", 0777)
+        if err != nil {
+                log.Println(err)
+        }
 }
 func readDB() {
         content, err := os.ReadFile("JSON_DB.json")
@@ -69,28 +116,38 @@ func readDB() {
         }
 
         if len(content) > 0 {
-                lines := strings.Split(string(content), "\n")
-                for _, l := range  lines {
-                        var item item
-                        err := json.Unmarshal([]byte(l), &item)
-                        if err != nil {
-                                log.Println(err)
-                        }
-
-                        stream = append(stream, &item)
+                var items []*item
+                err := json.Unmarshal(content, &items)
+                if err != nil {
+                        log.Println(err)
                 }
+
+                slices.Reverse(items)
+
+                stream = append(stream, items...)
         }
 }
 
 func saveJSON(json_b []byte) {
-        f, err := os.OpenFile("JSON_DB.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+        // f, err := os.OpenFile("JSON_DB.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+        f, err := os.Create("JSON_DB.json")
         if err != nil {
                 log.Println(err)
         }
 
         defer f.Close()
 
-        if _, err = f.WriteString(string(json_b) + "\n"); err != nil {
+	var stream_ []*item
+	copy(stream_, stream)
+	slices.Reverse(stream_)
+	b, err := json.Marshal(stream_)
+        if err != nil {
+                log.Println(err)
+        }
+         
+
+
+        if _, err = f.WriteString(string(b)); err != nil {
                 log.Println(err)
         }
 }

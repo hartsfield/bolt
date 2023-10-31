@@ -13,14 +13,73 @@
 
     function handleResponse(res) {
         if (res.success == "true") {
-            console.log(JSON.parse(res.item))
-                <!-- window.location = window.location.origin + "/itemView/" + res.replyID; -->
+            window.location = window.location.origin;
         } else {
             document.getElementById("errorField").innerHTML = res.error;
         }
     }
 </script>
-<form id='uploadForm' enctype='multipart/form-data'>
+<style>
+html {
+    margin: 1em;
+}
+input, textarea {
+    border: none;
+}
+::placeholder {
+    color: var(--html-bg);
+    opacity: 1; /* Firefox */
+}
+.uploadForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 80ch;
+    margin-bottom: 1em;
+}
+.uploadForm > * {
+    padding: 0.3em;
+    width: 100%;
+    border-radius: 0.3em;
+    margin-top: 0.5em;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 6px 2px #e2e2e2;
+}
+.form-submit {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    background: #f38d1c;
+    border: 1px solid orange;
+    color: white;
+    box-shadow: 0px 0px 6px 2px orange;
+    text-shadow: 0px 2px 2px #8e5c00;
+}
+.stream > div {
+    margin-bottom: 2em;
+    padding: 1em;
+    border-radius: 0.4em;
+    background: #FFFFFF;
+}
+.media-item > img {
+    max-width: 100%;
+    border-radius: 0.4em;
+}
+.next-lines {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.About {
+    width: 100%;
+}
+.next-lines > .item-part:not(.About) {
+    margin-left: 2em;
+}
+
+</style>
+<form class="uploadForm" id='uploadForm' enctype='multipart/form-data'>
     {{- range $k, $v :=  .Items }}
     {{- if eq $v "textarea" }}
     <textarea id='{{$k}}' type='text' name='{{$k}}' placeholder='{{$k}}'></textarea>
@@ -30,6 +89,6 @@
     <{{$v}} id='{{$k}}' type='text' name='{{$k}}'  placeholder='{{$k}}'/>
     {{- end }}
     {{- end}}
-    <div onclick="submitPost()" value="submit" >submit</div>
+    <div onclick="submitPost()" value="submit" class="form-submit" >submit</div>
 </form>
 {{ .StreamDirective }}
