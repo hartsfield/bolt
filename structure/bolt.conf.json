@@ -12,6 +12,7 @@
     "gcloud": {
         "command": "gcloud",
         "zone": "us-central1-a",
-        "project": "project-1"
+        "project": "project-1",
+        "proxy_home": "/home/john/go_proxy"
     }
 }

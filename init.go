@@ -34,6 +34,7 @@ type gcloud struct {
 	Project   string `json:"project"`
 	User      string `json:"user"`
 	LiveDir   string `json:"livedir"`
+	ProxyHome string `json:"proxy_home"`
 	ProxyConf string `json:"proxyConf"`
 }
 
@@ -122,31 +123,31 @@ func init() {
 	flag.Var(fMap["init"], "init", "\nEx.: --init appName\n\nInitializes a new bolt project in the directory 'appName'\n")
 
 	fMap["new-page"] = &stringFlag{do: createPage}
-	flag.Var(fMap["new-page"], "new-page", "Initializes a new page with the given name")
+	flag.Var(fMap["new-page"], "new-page", "\nEx.: --new-page pageName\n\nInitializes a new page with the given name")
 
 	fMap["new-component"] = &stringFlag{do: createComponent}
-	flag.Var(fMap["new-component"], "new-component", "Initializes a new component with the given name")
+	flag.Var(fMap["new-component"], "new-component", "\nEx.: --new-component componentName\n\nInitializes a new component with the given name")
 
 	fMap["new-route"] = &stringFlag{do: newRoute}
-	flag.Var(fMap["new-route"], "new-route", "Initializes a new route")
+	flag.Var(fMap["new-route"], "new-route", "\nEx.: --new-route routeName\n\nInitializes a new route")
 
 	fMap["insert-component"] = &stringFlag{do: insertcomponent}
-	flag.Var(fMap["insert-component"], "insert-component", "Inserts a new component into a page")
+	flag.Var(fMap["insert-component"], "insert-component", "\nEx.: --insert-component componentName,pageName\n\nInserts a component into a page")
 
 	fMap["streamable"] = &stringFlag{do: genStream}
-	flag.Var(fMap["streamable"], "streamable", "unfinished")
+	flag.Var(fMap["streamable"], "streamable", "\nEx.: --streamable (unfinished)\n\nCreates a stream of uploadable items with an upload form")
 
 	fMap["deploy"] = &stringFlag{do: deploy}
-	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
+	flag.Var(fMap["deploy"], "deploy", "\nEx.: --deploy\n\nDeploys project to server using values from bolt.conf.json")
 
 	fMap["autonav"] = &stringFlag{do: autonav}
-	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")
+	flag.Var(fMap["autonav"], "autonav", "\nEx.: --autonav page1,page2,page3,pageEtc\n\nInitializes a new navbar component with the given pages")
 
 	fMap["autosplash"] = &stringFlag{do: autosplash}
-	flag.Var(fMap["autosplash"], "autosplash", "Initializes a splash screen component")
+	flag.Var(fMap["autosplash"], "autosplash", "\nEx.: --autosplash public/filename.png\n\nInitializes a splash screen component")
 
 	fMap["remote-service-restart"] = &stringFlag{do: remoteServiceRestart}
-	flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
+	flag.Var(fMap["remote-service-restart"], "remote-service-restart", "\nEx.: --remote-service-restart\n\nRestarts a remote service using values from bolt.conf.json")
 
 	// flag.Var(fMap["add-style"], "add-style", "Adds a style to the stylesheet of the given component, usage: bolt --add-style=component:rulename")
 	// flag.Var(fMap["build-form"], "build-form", "Genrates an HTML form based on input")

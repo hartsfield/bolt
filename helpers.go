@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -9,6 +10,19 @@ import (
 	"os/exec"
 	"strings"
 )
+
+func readConf() *config {
+	b, err := os.ReadFile("./bolt.conf.json")
+	if err != nil {
+		log.Println(err)
+	}
+	c := config{}
+	err = json.Unmarshal(b, &c)
+	if err != nil {
+		log.Println(err)
+	}
+	return &c
+}
 
 func createPage(params []string) {
 	create(params[0], "pages")
