@@ -1,6 +1,7 @@
 {
     "app": {
-        "name":"Bolt App",
+        "name": "Bolt App",
+        "command": "boltApp",
         "domain_name": "domain.name.com",
         "port": "9123",
         "tls_enabled": "true",
@@ -13,6 +14,6 @@
         "command": "gcloud",
         "zone": "us-central1-a",
         "project": "project-1",
-        "proxy_home": "/home/john/go_proxy"
+        "proxy_home": "/home/john/bp"
     }
 }
