@@ -2,10 +2,23 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 )
+
+func readConf() *config {
+	b, err := os.ReadFile("./bolt.conf.json")
+	if err != nil {
+		log.Println(err)
+	}
+	c := config{}
+	json.Unmarshal(b, &c)
+	fmt.Println(c)
+	return &c
+}
 
 // exeTmpl is used to build and execute an html template.
 func exeTmpl(w http.ResponseWriter, r *http.Request, view *viewData, tmpl string) {

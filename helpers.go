@@ -111,16 +111,18 @@ func exists(path string) (bool, error) {
 // 	return servicePort
 // }
 
-// func remoteServiceRestart(name string) {
-// 	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
-// 	log.Println(cloudCommand([]string{"cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &"}))
-// }
+func remoteServiceRestart(args []string) {
+	name := args[0]
+	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
+	log.Println(cloudCommand([]string{"cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &"}))
+}
 
 func localCommand(command []string) string {
 	cmd := exec.Command(command[0], command[1:]...)
 	o, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Println(err)
+		log.Println("Git error")
 	}
 	return string(o)
 }

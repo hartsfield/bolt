@@ -5,6 +5,7 @@ import (
 )
 
 func main() {
+	rc = readConf()
 	// see init.go
 	readFlags()
 }

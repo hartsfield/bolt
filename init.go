@@ -5,33 +5,36 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 )
 
 type env map[string]string
 
 type config struct {
-	App    app
-	GCloud gcloud
-	Env    env
+	App    app    `json:"app"`
+	GCloud gcloud `json:"gcloud"`
 }
 
 type app struct {
-	Name    string
-	Version string
-	Env     env
-	Port    string
+	Name       string `json:"name"`
+	DomainName string `json:"domain_name"`
+	Version    string `json:"version"`
+	Env        env    `json:"env"`
+	Port       string `json:"port"`
+	AlertsOn   string `json:"alertsOn"`
+	TLSEnabled bool   `json:"tls_enabled"`
+	Repo       string `json:"repo"`
 }
 
 type gcloud struct {
-	Command  string
-	Zone     string
-	Instance string
-	Project  string
+	Command   string `json:"command"`
+	Zone      string `json:"zone"`
+	Project   string `json:"project"`
+	User      string `json:"user"`
+	LiveDir   string `json:"livedir"`
+	ProxyConf string `json:"proxyConf"`
 }
 
 type stringFlag struct {
@@ -43,7 +46,7 @@ type stringFlag struct {
 // type funcany[T any] func(doAny)
 
 // type doAny struct {
-// 	FileName       string
+// 	fileName       string
 // 	FileData       string
 // 	ComponentName  string
 // 	PageName       string
@@ -89,7 +92,7 @@ var (
 	router_tmpl string
 	//go:embed structure/server.go
 	server_go_tmpl string
-	//go:embed structure/bolt_conf.json
+	//go:embed structure/bolt.conf.json
 	bolt_conf_tmpl string
 	//go:embed structure/viewdata.go
 	viewdata_go_tmpl string
@@ -105,39 +108,49 @@ var (
 
 // other globals
 var (
-	// flagMap maps flag strings to a *stringFlag{}
+	// f(lag)Map maps flag strings to a *stringFlag{}
 	fMap map[string]*stringFlag = make(map[string]*stringFlag)
 
 	components_dir string = "internal/components/"
+	rc             *config
 )
 
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	rand.Seed(time.Now().UTC().UnixNano())
 
 	fMap["init"] = &stringFlag{do: boltInit}
-	fMap["new-page"] = &stringFlag{do: createPage}
-	fMap["new-component"] = &stringFlag{do: createComponent}
-	fMap["new-route"] = &stringFlag{do: newRoute}
-	fMap["insert-component"] = &stringFlag{do: insertcomponent}
-	fMap["streamable"] = &stringFlag{do: genStream}
-	fMap["deploy"] = &stringFlag{do: deploy}
-	fMap["autonav"] = &stringFlag{do: autonav}
-	fMap["autosplash"] = &stringFlag{do: autosplash}
+	flag.Var(fMap["init"], "init", "\nEx.: --init appName\n\nInitializes a new bolt project in the directory 'appName'\n")
 
-	flag.Var(fMap["init"], "init", "Initializes a new bolt project")
+	fMap["new-page"] = &stringFlag{do: createPage}
 	flag.Var(fMap["new-page"], "new-page", "Initializes a new page with the given name")
+
+	fMap["new-component"] = &stringFlag{do: createComponent}
 	flag.Var(fMap["new-component"], "new-component", "Initializes a new component with the given name")
+
+	fMap["new-route"] = &stringFlag{do: newRoute}
 	flag.Var(fMap["new-route"], "new-route", "Initializes a new route")
+
+	fMap["insert-component"] = &stringFlag{do: insertcomponent}
 	flag.Var(fMap["insert-component"], "insert-component", "Inserts a new component into a page")
+
+	fMap["streamable"] = &stringFlag{do: genStream}
 	flag.Var(fMap["streamable"], "streamable", "unfinished")
+
+	fMap["deploy"] = &stringFlag{do: deploy}
 	flag.Var(fMap["deploy"], "deploy", "Deploys project to server")
+
+	fMap["autonav"] = &stringFlag{do: autonav}
 	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")
+
+	fMap["autosplash"] = &stringFlag{do: autosplash}
 	flag.Var(fMap["autosplash"], "autosplash", "Initializes a splash screen component")
+
+	fMap["remote-service-restart"] = &stringFlag{do: remoteServiceRestart}
+	flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
+
 	// flag.Var(fMap["add-style"], "add-style", "Adds a style to the stylesheet of the given component, usage: bolt --add-style=component:rulename")
 	// flag.Var(fMap["build-form"], "build-form", "Genrates an HTML form based on input")
 	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
-	// flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
 }
 
 func readFlags() {
@@ -161,9 +174,9 @@ func boltInit(params []string) {
 		log.Fatalln(err)
 	}
 	if !empty && len(appName) < 1 {
-		_, err = os.ReadFile("bolt_conf.json")
+		_, err = os.ReadFile("bolt.conf.json")
 		if err == nil {
-			fmt.Println("\n   > bolt_conf.json detected, this directory already appears to contain a bolt project, exiting.")
+			fmt.Println("\n   > bolt.conf.json detected, this directory already appears to contain a bolt project, exiting.")
 			fmt.Println()
 			os.Exit(0)
 		}
@@ -198,7 +211,7 @@ func boltInit(params []string) {
 	}
 	main_go.WriteString(main_go_tmpl)
 
-	bctmpl, err := os.Create(appdir + "bolt_conf.json")
+	bctmpl, err := os.Create(appdir + "bolt.conf.json")
 	if err != nil {
 		log.Println(err)
 	}
