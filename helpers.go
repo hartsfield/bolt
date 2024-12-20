@@ -30,10 +30,9 @@ func create(name, structure string) {
 	}
 	tmpl_.WriteString(`<div class="template-wrapper ` + name +
 		`-outer" id="` + name + `-outer">` + "\n" +
-		`</div>` + "\n" +
-		`<style>{{ template "` + name + `.css" }}</style>` + "\n" +
-		`<script>{{ template "` + name + `.js"}}</script>` + "\n" +
-		`{{end}}`)
+		`<style>{{ template "` + name + `.css" . }}</style>` + "\n" +
+		`<script>{{ template "` + name + `.js" . }}</script>` + "\n" +
+		`</div>`)
 
 	_, err = os.Create(wd + name + "/" + name + ".css")
 	if err != nil {
