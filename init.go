@@ -60,6 +60,7 @@ func (sf *stringFlag) Set(x string) error {
 	sf.set = true
 	return nil
 }
+
 func (sf *stringFlag) String() string {
 	return sf.value
 }
@@ -134,13 +135,9 @@ func init() {
 	flag.Var(fMap["autonav"], "autonav", "Initializes a new navbar component")
 	flag.Var(fMap["autosplash"], "autosplash", "Initializes a splash screen component")
 	// flag.Var(fMap["add-style"], "add-style", "Adds a style to the stylesheet of the given component, usage: bolt --add-style=component:rulename")
-	// flag.Var(fMap["build-range"], "build-range", "Genrates an HTML range")
-	// flag.Var(fMap["genstruct"], "genstruct", "Genrates a structure based on input")
 	// flag.Var(fMap["build-form"], "build-form", "Genrates an HTML form based on input")
-	// flag.Var(fMap["add-page"], "add-page", "Installs a page template from a remote git repository")
 	// flag.Var(fMap["install-component"], "install-component", "Installs a component from a git hub repo")
 	// flag.Var(fMap["remote-service-restart"], "remote-service-restart", "Restarts a remote service")
-
 }
 
 func readFlags() {

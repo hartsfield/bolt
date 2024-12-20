@@ -13,7 +13,7 @@ func deploy(pc []string) {
 	checkInsert(pc[0], pc[1], pc[2], pc[3])
 }
 func checkInsert(name, port, hasTLS, alertsOn string) {
-	op := cloudCommand([]string{"cat prox.conf"})
+	op := cloudCommand([]string{"cat ~/gp/prox.conf"})
 	sop := strings.Split(op, "\n")
 	for _, o := range sop {
 		if strings.Contains(o, ":") {

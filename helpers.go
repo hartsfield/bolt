@@ -126,7 +126,8 @@ func localCommand(command []string) string {
 }
 
 func cloudCommand(command []string) string {
-	args := []string{`compute`, `ssh`, `--zone`, `us-central1-a`, `instance-2`, `--project`, `mysterygift`, `--`}
+	args := []string{`compute`, `ssh`, `--zone`, `us-central1-a`, `main`, `--project`, `mysterygift`, `--`}
+
 	args = append(args, command...)
 	cmd := exec.Command(`gcloud`, args...)
 	o, err := cmd.CombinedOutput()
@@ -135,6 +136,7 @@ func cloudCommand(command []string) string {
 	}
 	return string(o)
 }
+
 func insertLineAfter(filepath, opening, insert, closing string) {
 	f, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
