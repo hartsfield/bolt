@@ -301,6 +301,7 @@ func boltInit(params []string) {
 	router.WriteString(router_tmpl)
 
 	cmd := exec.Command("tree", "-C", "--dirsfirst", ".")
+	cmd.Dir = "./" + appName
 	b, err := cmd.Output()
 	if err != nil {
 		log.Println(err)
