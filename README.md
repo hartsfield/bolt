@@ -10,8 +10,6 @@ architecture, and generates server code and other files that are useful for
 rapid prototyping and development. Bolt also has other features useful for 
 rapid development. 
 
-Bolt has no third-party dependencies. 
-
 NOTE: Bolt is under heavy development and is still considered beta. Currently 
 bolt can be used to build single-page static websites, but in the future, bolt 
 will be able to aid in the development of large dynamic websites, and also help
