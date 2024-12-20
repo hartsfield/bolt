@@ -119,11 +119,6 @@ func exists(path string) (bool, error) {
 	return false, err
 }
 
-// func getServicePort(name string) string {
-// 	servicePort := cloudCommand([]string{"cat ~/prox.conf | grep " + name + " | cut -d: -f1"})
-// 	return servicePort
-// }
-
 func remoteServiceRestart(args []string) {
 	name := args[0]
 	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
