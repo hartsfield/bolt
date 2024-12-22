@@ -31,7 +31,7 @@ type app struct {
 	Version    string `json:"version"`
 	Env        env    `json:"env"`
 	Port       string `json:"port"`
-	AlertsOn   string `json:"alertsOn"`
+	AlertsOn   bool   `json:"alertsOn"`
 	TLSEnabled bool   `json:"tls_enabled"`
 	Repo       string `json:"repo"`
 }
