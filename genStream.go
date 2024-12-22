@@ -33,7 +33,6 @@ func genStream(model_ []string) {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(inputs)
 	var componentName string = "upload"
 	for elm, names := range inputs {
 		for _, name := range names {
