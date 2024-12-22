@@ -1,4 +1,6 @@
 #!/bin/bash
+rm -rf btest
+pkill btest
 mkdir btest
 cd btest
 bolt

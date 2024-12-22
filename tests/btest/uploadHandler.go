@@ -122,7 +122,7 @@ func init() {
 func readDB() {
         content, err := os.ReadFile("JSON_DB.json")
         if err != nil {
-                log.Println(err)
+                // log.Println(err)
         }
 
         if len(content) > 0 {
