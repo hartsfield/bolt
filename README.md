@@ -20,8 +20,16 @@ a dynamic social media platform.
 
 ## Quickstart
 
+ - Compile bolt:
+
+        $ cd
+        $ git clone https://github.com/hartsfield/bolt
+        $ cd bolt
+        $ go build -o bolt
+        $ mv bolt $PATH
  - Create a bolt app:
  
+        $ cd
         $ mkdir boltapp
         $ cd boltapp
         $ bolt
@@ -131,11 +139,5 @@ Now lets add a splash page to our website:
 This command will generate a splash page with the `companyName` shown in front 
 of `test.jpg`. Place an image named `test.jpg` in `public/media`, and you should 
 see the following:
-
-You can generate a new, empty component, called `test1` with the following 
-command:
-
-    bolt --new-component=test1
-
 
 ![Untitled drawing (4)](https://github.com/hartsfield/bolt/assets/30379836/b551f0d4-53e5-4309-b7d7-9fc26b7eaa76)
