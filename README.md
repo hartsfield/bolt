@@ -133,6 +133,6 @@ template directives.
 Once a component is created, it must then be added to a `page` by specifying it 
 in a template directive.
 
-More infor coming soon.
+More info coming soon.
 
 ![Untitled drawing (4)](https://github.com/hartsfield/bolt/assets/30379836/b551f0d4-53e5-4309-b7d7-9fc26b7eaa76)
