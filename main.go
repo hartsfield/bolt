@@ -1,3 +1,7 @@
+// NOTE: Need:
+// bolt bootstrap
+// bolt config
+// bolt hmmm
 package main
 
 import (

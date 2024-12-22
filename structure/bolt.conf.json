@@ -4,8 +4,8 @@
         "command": "boltApp",
         "domain_name": "domain.name.com",
         "port": "9123",
-        "tls_enabled": "true",
-        "alertsOn": "true",
+        "tls_enabled": true,
+        "alertsOn": true,
         "env": {"logFilePath": "./log.txt"},
         "version": "0.1",
         "repo": ""
@@ -14,6 +14,9 @@
         "command": "gcloud",
         "zone": "us-central1-a",
         "project": "project-1",
-        "proxy_home": "/home/john/bp"
+        "proxy_home": "/home/john/bp/",
+        "livedir": "/home/john/live/",
+        "user": "john",
+        "instance": "main"
     }
 }

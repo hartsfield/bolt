@@ -126,11 +126,13 @@ func remoteServiceRestart(args []string) {
 }
 
 func localCommand(command []string) string {
-	cmd := exec.Command(command[0], command[1:]...)
+	var cmd *exec.Cmd = &exec.Cmd{}
+	cmd.Env = append(cmd.Env, "GOARCH=amd64")
+	cmd.Env = append(cmd.Env, "GOOS=linux")
+	cmd = exec.Command(command[0], command[1:]...)
 	o, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Println(err)
-		log.Println("Git error")
+		log.Println("local command error: ", err, string(o))
 	}
 	return string(o)
 }
