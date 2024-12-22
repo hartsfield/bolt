@@ -29,11 +29,13 @@ func createPage(params []string) {
 		create(p, "pages")
 	}
 }
+
 func createComponent(params []string) {
 	for _, p := range params {
 		create(p, "components")
 	}
 }
+
 func create(name, structure string) {
 	wd := "internal/" + structure + "/"
 	ex, err := exists(wd + name)
@@ -63,6 +65,7 @@ func create(name, structure string) {
 	}
 	fmt.Println("Created:", "\n", wd+name+"/"+name+"{.html,.css,.js}")
 }
+
 func autoList(name string, listItems []string) {}
 func autoFlex(name string)                     {}
 

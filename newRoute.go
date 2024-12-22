@@ -17,7 +17,6 @@ func newHandler(handlerName string, fileBytes []byte) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer f.Close()
 
 	var txt string

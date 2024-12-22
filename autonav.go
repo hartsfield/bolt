@@ -92,12 +92,12 @@ function tf() {
     margin-right: 2em;
     padding: 0.5em;
 }
+
 .hamburger {
     background-color: seashell;
     height: 0.3em;
     width: 2.5em;
 }
-
 
 .navbar-outer {
     display: inline-flex;
@@ -118,6 +118,7 @@ function tf() {
     padding: 1em;
     cursor: pointer;
 }
+
 @media screen and (orientation:landscape) {
     .ham-outer {
         display: none;

@@ -9,9 +9,6 @@ import (
 	"text/template"
 )
 
-// Orientation:
-// 60% left
-
 var (
 	inputs   map[string][]string = make(map[string][]string)
 	elements map[string]string   = make(map[string]string)
@@ -50,8 +47,8 @@ func genStream(model_ []string) {
 			}
 		}
 	}
-	b_html := makeHTML()
-	b_go := makeGo()
+	b_html := makeCode(data{Items: elements, StreamDirective: buildDataStream(inputs)}, globals_streamable_html)
+	b_go := makeCode(data{Inputs: inputs, Lowered: lowerMap(inputs)}, globals_streamable_go)
 	writeTmpl(b_html, componentName)
 	writeGo(b_go, componentName+"Handler.go")
 	insertViewDirective([]string{"Stream", "[]*item"})
@@ -85,34 +82,27 @@ func lowerMap(ins map[string][]string) (lowered map[string][]string) {
 	return
 }
 
-func makeGo() []byte {
-	data := data{Inputs: inputs, Lowered: lowerMap(inputs)}
-	// data.Inputs = inputs
-	// data.Lowered = lowerMap(inputs)
+func makeCode(data data, glob string) []byte {
 	b := bytes.NewBuffer([]byte{})
-	t := template.Must(template.New("").Parse(globals_streamable_go))
+	t := template.Must(template.New("").Parse(glob))
 	err := t.ExecuteTemplate(b, "", &data)
 	if err != nil {
 		log.Println(err)
 	}
-
 	return b.Bytes()
 }
 
-func makeHTML() []byte {
-	data := data{}
-	data.Items = elements
-	data.StreamDirective = buildDataStream(inputs)
+// func makeHTML() []byte {
+// 	data := data{Items: elements, StreamDirective: buildDataStream(inputs)}
+// 	b := bytes.NewBuffer([]byte{})
+// 	t := template.Must(template.New("").Parse(globals_streamable_html))
+// 	err := t.ExecuteTemplate(b, "", &data)
+// 	if err != nil {
+// 		log.Println(err)
+// 	}
+// 	return b.Bytes()
+// }
 
-	b := bytes.NewBuffer([]byte{})
-	t := template.Must(template.New("").Parse(globals_streamable_html))
-	err := t.ExecuteTemplate(b, "", &data)
-	if err != nil {
-		log.Println(err)
-	}
-
-	return b.Bytes()
-}
 func buildDataStream(ins map[string][]string) string {
 	build := []string{
 		"<div class='stream'>",
@@ -150,8 +140,6 @@ func writeTmpl(btxt []byte, filename string) {
 	if err != nil {
 		log.Println(err)
 	}
-
-	// You can also write it to a file as a whole.
 	err = os.WriteFile("internal/components/"+filename+"/"+filename+".html", btxt, 0644)
 	if err != nil {
 		log.Fatal(err)

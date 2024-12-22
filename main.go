@@ -1,7 +1,7 @@
 // NOTE: Need:
 // bolt bootstrap
 // bolt config
-// bolt hmmm
+// bolt interactive
 package main
 
 import (
@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	rc = readConf()
 	// see init.go
 	readFlags()
 }

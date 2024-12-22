@@ -37,12 +37,14 @@ func autosplash(params []string) {
     align-items: center;
     justify-content: center;
 }
+
 .splash-logo {
     font-size: 3em;
     font-weight: bold;
     color: seashell;
     animation: 600ms linear scalein;
 }
+
 @keyframes scalein {
   0% {transform: scale(5) rotate(720deg);}
   // 100% {transform: scale(1);}

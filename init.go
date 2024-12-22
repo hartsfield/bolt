@@ -96,9 +96,8 @@ var (
 // other globals
 var (
 	// f(lag)Map maps flag strings to a *stringFlag{}
-	fMap map[string]*stringFlag = make(map[string]*stringFlag)
-
-	components_dir string = "internal/components/"
+	fMap           map[string]*stringFlag = make(map[string]*stringFlag)
+	components_dir string                 = "internal/components/"
 	rc             *config
 )
 
