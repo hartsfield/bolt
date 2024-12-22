@@ -2,7 +2,6 @@ package main
 
 import (
 	"html/template"
-	"os"
 )
 
 // ckey/ctxkey is used as the key for the HTML context and is how we retrieve
@@ -14,7 +13,7 @@ const ctxkey ckey = iota
 var (
 	appConf     *config            = readConf()
 	servicePort                    = ":" + appConf.App.Port
-	logFilePath                    = os.Getenv("logFilePath")
+	logFilePath                    = appConf.App.Env["logFilePath"]
 	templates   *template.Template = template.New("")
 	AppName     string             = appConf.App.Name
 )
