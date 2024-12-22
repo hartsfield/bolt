@@ -96,7 +96,7 @@ The structure of a bolt app looks like this:
          12 directories, 18 files
 
 A bolt app is composed of html templates called `pages` and `components`. `pages`
-are typically composed of components, and components can also be composed of
+are usually composed of components, and components can also be composed of
 other components. 
 
 Bolt will also generate some basic server code and build files to begin the 
