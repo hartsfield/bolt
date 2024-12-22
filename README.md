@@ -27,6 +27,7 @@ a dynamic social media platform.
         $ cd bolt
         $ go build -o bolt
         $ mv bolt $PATH
+        $ bolt --help
  - Create a bolt app:
  
         $ cd
@@ -132,12 +133,6 @@ template directives.
 Once a component is created, it must then be added to a `page` by specifying it 
 in a template directive.
 
-Now lets add a splash page to our website:
-
-    bolt --autosplash=test.jpg
-
-This command will generate a splash page with the `companyName` shown in front 
-of `test.jpg`. Place an image named `test.jpg` in `public/media`, and you should 
-see the following:
+More infor coming soon.
 
 ![Untitled drawing (4)](https://github.com/hartsfield/bolt/assets/30379836/b551f0d4-53e5-4309-b7d7-9fc26b7eaa76)
