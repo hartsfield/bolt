@@ -146,7 +146,7 @@ file:
 
 bolt command:
 
-    bolt streamable model.json
+    bolt --streamable model.json
 
 Result:
 
