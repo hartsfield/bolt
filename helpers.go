@@ -25,10 +25,14 @@ func readConf() *config {
 }
 
 func createPage(params []string) {
-	create(params[0], "pages")
+	for _, p := range params {
+		create(p, "pages")
+	}
 }
 func createComponent(params []string) {
-	create(params[0], "components")
+	for _, p := range params {
+		create(p, "components")
+	}
 }
 func create(name, structure string) {
 	wd := "internal/" + structure + "/"
