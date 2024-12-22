@@ -3,7 +3,7 @@ package main
 func insertcomponent(params []string) {
 	component := params[0]
 	var page string
-	if len(params) > 0 {
+	if len(params) > 1 {
 		page = params[1]
 	} else {
 		page = "main"
