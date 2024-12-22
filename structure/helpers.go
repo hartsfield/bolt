@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -15,8 +14,10 @@ func readConf() *config {
 		log.Println(err)
 	}
 	c := config{}
-	json.Unmarshal(b, &c)
-	fmt.Println(c)
+	err = json.Unmarshal(b, &c)
+	if err != nil {
+		log.Println(err)
+	}
 	return &c
 }
 
