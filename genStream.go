@@ -24,10 +24,15 @@ type data struct {
 	StreamDirective string
 }
 
-var jsn string = `{ "file": ["FileElement"], "text": ["Title","Year","Price"], "textarea": ["About"] }`
+// var jsn string = `{ "file": ["FileElement"], "text": ["Title","Year","Price"], "textarea": ["About"] }`
 
-func genStream([]string) {
-	err := json.Unmarshal([]byte(jsn), &inputs)
+// The model is just a json file
+func genStream(model_ []string) {
+	model, err := os.ReadFile(model_[0])
+	if err != nil {
+		log.Println(err)
+	}
+	err = json.Unmarshal([]byte(model), &inputs)
 	if err != nil {
 		log.Println(err)
 	}

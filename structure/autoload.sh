@@ -6,4 +6,4 @@ go build -o $1
 servicePort=$2 logFilePath=./log.txt ./$1 &>> log.txt &
 
 # mac os
-# servicePort=$2 logFilePath=./log.txt ./$1 >> log.txt 2>&1 &
+# ./$1 >> log.txt 2>&1 &

@@ -1,0 +1,5 @@
+{
+    "file": ["FileElement"],
+    "text": ["Title","Year","Price"],
+    "textarea": ["About"]
+}

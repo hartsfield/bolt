@@ -1,0 +1,34 @@
+<div class="navbar-outer">
+  <div class="logo-nav" onclick="window.location = window.location.origin">{{ .AppName }}</div>
+
+  <div class="nav-landscape">
+    <ul>
+    
+      <li onclick="jumpTo('section-about')">about</li>
+<li onclick="jumpTo('section-contact')">contact</li>
+<li onclick="jumpTo('section-footer')">footer</li>
+
+    </ul>
+  </div>
+
+  <div class="nav-portrait" id="nav-portrait">
+    <div class="nav-portrait-logo">{{ .AppName }}</div>
+    <ul>
+    
+<li onclick="jumpTo('section-about')">about</li>
+<li onclick="jumpTo('section-contact')">contact</li>
+<li onclick="jumpTo('section-footer')">footer</li>
+
+    </ul>
+  </div>
+
+  <div class="ham-outer" onclick="showNavPortrait()">
+    <div class="hamburger"></div>
+    <div class="hamburger"></div>
+    <div class="hamburger"></div>
+  </div>
+
+</div>
+
+<style>{{ template "autonav.css" }}</style>
+<script>{{ template "autonav.js"}}</script>

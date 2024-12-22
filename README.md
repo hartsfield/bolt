@@ -48,7 +48,7 @@ a dynamic social media platform.
 ## Features in progress
  - Generate basic scaffolding to begin building a web app
  - Tooling to speed up the process of creating generic web components
- - Convert data modeled in CSV into code for forms and basic database procedures
+ - Convert data modeled in JSON into code for forms and basic database procedures
  - Install components from third party git repos
 
 
@@ -132,6 +132,25 @@ template directives.
 
 Once a component is created, it must then be added to a `page` by specifying it 
 in a template directive.
+
+Create an upload form and stream of uploads based on data modeled in a `.json`
+file:
+
+`model.json`:
+
+    {
+        "file": ["FileElement"],
+        "text": ["Title","Year","Price"],
+        "textarea": ["About"]
+    }
+
+bolt command:
+
+    bolt streamable model.json
+
+Result:
+
+<img width="800" alt="Screenshot 2024-12-22 at 12 55 26 AM" src="https://github.com/user-attachments/assets/680b1f20-5297-4938-990b-acd40e7f15a6" />
 
 More info coming soon.
 

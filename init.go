@@ -45,21 +45,6 @@ type stringFlag struct {
 	do    func([]string)
 }
 
-// type funcany[T any] func(doAny)
-
-// type doAny struct {
-// 	fileName       string
-// 	FileData       string
-// 	ComponentName  string
-// 	PageName       string
-// 	Sections       []string
-// 	AutoSplashName string
-// 	ProxConfig     string
-// 	RouteName      string
-// 	HandlerName    string
-// 	AppName        string
-// }
-
 func (sf *stringFlag) Set(x string) error {
 	sf.value = x
 	sf.set = true

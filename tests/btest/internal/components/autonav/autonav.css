@@ -1,0 +1,106 @@
+.ham-outer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    margin-right: 2em;
+    padding: 0.5em;
+}
+.hamburger {
+    background-color: seashell;
+    height: 0.3em;
+    width: 2.5em;
+}
+
+
+.navbar-outer {
+    display: inline-flex;
+    font-size: 1.1em;
+    position: fixed;
+    background: chocolate;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    animation: 0.2s linear navbar-load;;
+    z-index: 101010101010;
+}
+
+.logo-nav {
+    padding: 1em;
+    cursor: pointer;
+}
+@media screen and (orientation:landscape) {
+    .ham-outer {
+        display: none;
+    }
+    .nav-landscape > ul {
+        display: inline-flex;
+        list-style-type: none;
+        margin-right: 2em;
+    }
+    .nav-landscape > ul > li {
+        margin: 0 1.5em 0 0;
+        padding: 1em;
+        cursor: pointer;
+    }
+    .nav-landscape > ul > li:hover {
+        background-color: #919b0b;
+    }
+    .nav-portrait {
+        display: none;
+    }
+    .navbar-outer {
+        display: inline-flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        /* align-items: stretch; */
+        /* flex-direction: row; */
+    }
+}
+@media screen and (orientation:portrait) {
+    .navbar-outer {
+        padding-left: 1em;
+    }
+    .logo-nav {
+        max-width: 75%;
+        line-height: 1.5em;
+    }
+    .nav-landscape {
+        display: none;
+    }
+    .nav-portrait {
+        position: absolute;
+        background-color: #622b6bc7;
+        color: seashell;
+        height: 100vh;
+        padding: 1em 2em 1em 1em;
+        font-size: 1.5em;
+    }
+    .nav-portrait > ul {
+        list-style-type: none;
+    }
+    .nav-portrait > ul > li {
+        margin-top: 1em;
+        text-align: right;
+        cursor: pointer;
+        padding: 0.2em;
+        color: #ffd0ec;
+    }
+    .nav-portrait > ul > li:hover {
+        background: #c96100;
+    }
+    .nav-portrait-logo {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 2em;
+        background: #c96100;
+    }
+}
+@keyframes navbar-load {
+    0% {transform: translateY(-3em);}
+    90% {transform: translateY(-3em);}
+    100% {transform: translateY(0);}
+}
