@@ -5,7 +5,7 @@
 
 Bolt is not a third-party dependency, `bolt` is a Go program that generates the 
 scaffolding for a web application using a component based model-view-controller 
-architecture, and server code and other files that are useful for 
+architecture, server code, and other files that are useful for 
 rapid prototyping and development. Bolt also has other features useful for 
 continuous integration and development by enterprise firms. 
 
