@@ -103,7 +103,8 @@ function tf() {
     display: inline-flex;
     font-size: 1.1em;
     position: fixed;
-    background: chocolate;
+    background: #88d5d8;
+    color: white;
     top: 0;
     left: 0;
     width: 100vw;
@@ -160,8 +161,8 @@ function tf() {
     }
     .nav-portrait {
         position: absolute;
-        background-color: #622b6bc7;
-        color: seashell;
+        background-color: #7fc3e1;
+        color: #ffffff;
         height: 100vh;
         padding: 1em 2em 1em 1em;
         font-size: 1.5em;
@@ -174,16 +175,17 @@ function tf() {
         text-align: right;
         cursor: pointer;
         padding: 0.2em;
-        color: #ffd0ec;
     }
     .nav-portrait > ul > li:hover {
-        background: #c96100;
+        background: #ffffff;
+        color: #e16f6f;
     }
     .nav-portrait-logo {
         text-align: center;
         width: 100%;
         margin-bottom: 2em;
-        background: #c96100;
+        background: #e16f6f;
+        padding: 0.7em;
     }
 }
 @keyframes navbar-load {

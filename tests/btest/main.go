@@ -1,6 +1,7 @@
 package main // viewData represents the root model used to dynamically update the app
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 )
@@ -19,6 +20,7 @@ func main() {
 	ctx, srv := bolt()
 
 	log.Println("Waiting for connections @ http://localhost" + srv.Addr)
+	fmt.Println("\nWaiting for connections @ http://localhost" + srv.Addr)
 
 	<-ctx.Done()
 }

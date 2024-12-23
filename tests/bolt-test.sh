@@ -4,13 +4,15 @@ pkill btest
 mkdir btest
 cd btest
 bolt
-bolt --autonav about,contact,footer
+bolt --autonav about,contact
 touch model.json
 echo '{
+    "textarea": ["Message"],
     "file": ["FileElement"],
-    "text": ["Title","Year","Price"],
-    "textarea": ["About"]
+    "text": ["Title", "Email"]
 }' >> model.json
 bolt --streamable model.json
 go build -o btestbin
 ./btestbin &
+cd ..
+go run main.go localhost:9125/uploadItem/ me@me.com "my thing" "a picture of a thing"

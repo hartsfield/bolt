@@ -3,7 +3,7 @@
         "name": "Bolt App",
         "command": "boltApp",
         "domain_name": "domain.name.com",
-        "port": "9123",
+        "port": "9125",
         "tls_enabled": true,
         "alertsOn": true,
         "env": {"logFilePath": "./log.txt"},

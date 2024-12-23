@@ -20,8 +20,8 @@
     }
 </script>
 <style>
-html {
-    margin: 1em;
+body, html {
+    margin: 3em 0.5em;
 }
 input, textarea {
     border: none;
@@ -30,11 +30,18 @@ input, textarea {
     color: var(--html-bg);
     opacity: 1; /* Firefox */
 }
+.stream {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 0.5em;
+}
 .uploadForm {
     display: flex;
     flex-direction: column;
-    max-width: 80ch;
     margin-bottom: 1em;
+    margin: 1em;
 }
 .uploadForm > * {
     padding: 0.3em;
@@ -42,7 +49,7 @@ input, textarea {
     border-radius: 0.3em;
     margin-top: 0.5em;
     background: #FFFFFF;
-    box-shadow: 0px 0px 6px 2px #e2e2e2;
+    border: 1px solid #e8e8e8;
 }
 .form-submit {
     text-align: center;
@@ -51,51 +58,69 @@ input, textarea {
     background: #f38d1c;
     border: 1px solid orange;
     color: white;
-    box-shadow: 0px 0px 6px 2px orange;
-    text-shadow: 0px 2px 2px #8e5c00;
 }
 .stream > div {
-    margin-bottom: 2em;
-    padding: 1em;
+    margin: 0.5em;
+    padding: 0.5em;
     border-radius: 0.4em;
-    background: #FFFFFF;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: stretch;
+    background: #f1f1f1;
+    cursor: pointer;
 }
 .media-item > img {
-    max-width: 100%;
+    width: 100%;
     border-radius: 0.4em;
 }
 .next-lines {
-    margin-top: 1rem;
+    margin-top: 0.8rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-end;
+    justify-content: space-around;
+    background: #e06767;
+    color: #e8e8e8;
+    padding: 0.6em;
+    border-radius: 0.3em;
+    font-size: 0.9em;
+    align-items: center;
 }
 .About {
     width: 100%;
 }
 .next-lines > .item-part:not(.About) {
-    margin-left: 2em;
+    <!-- margin-left: 2em; -->
 }
 
+@media screen and (orientation:landscape) {
+    body, html {
+        max-width: 80ch;
+    }
+    .stream {
+        max-width: 80ch;
+    }
+}
 </style>
 <form class="uploadForm" id='uploadForm' enctype='multipart/form-data'>
-    <textarea id='About' type='text' name='About' placeholder='About'></textarea>
-    <input id='FileElement' type='file' name='FileElement'/>
-    <input id='Price' type='text' name='Price'  placeholder='Price'/>
-    <input id='Title' type='text' name='Title'  placeholder='Title'/>
-    <input id='Year' type='text' name='Year'  placeholder='Year'/>
+            <input id='Email' type='text' name='Email'  placeholder='Email'/>
+            <input id='Title' type='text' name='Title'  placeholder='Title'/>
+            <textarea id='Message' type='text' name='Message' placeholder='Message'></textarea>
+            <input id='FileElement' type='file' name='FileElement'/>
     <div onclick="submitPost()" value="submit" class="form-submit" >submit</div>
 </form>
 <div class='stream'>
 	{{ range $k, $v :=  .Stream }}
-		<div class='item-outer'>
-			<div class='item-part media-item FileElement'><img src='{{$v.TempFileName}}'/>{{ $v.FileElement }}</div>
+		<div class='item-outer' onclick="window.location = '/view/{{$v.ID}}'">
+			<div class='item-part media-item FileElement'><img src='/{{$v.TempFileName}}'/>{{ $v.FileElement }}</div>
 <div class='next-lines'>
 			<div class='item-part Title'>{{ $v.Title }}</div>
-			<div class='item-part Year'>{{ $v.Year }}</div>
-			<div class='item-part Price'>{{ $v.Price }}</div>
-			<div class='item-part About'>{{ $v.About }}</div>
+			<div class='item-part Email'>{{ $v.Email }}</div>
+			<div class='item-part Message'>{{ $v.Message }}</div>
 </div>
 		</div>
 	{{ end }}

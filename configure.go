@@ -16,7 +16,7 @@ var questions []string = []string{
 }
 
 var answers []string = []string{
-	"Bolt App", "0.01", "boltapp", "domain_name.com", "9123", "", "", "",
+	"Bolt App", "0.01", "boltapp", "domain_name.com", "9125", "", "", "",
 	"", "", "~/live",
 }
 

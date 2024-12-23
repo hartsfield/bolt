@@ -199,5 +199,4 @@ func insertLineAfter(filepath, opening, insert, closing string) {
 	if err := f.Close(); err != nil {
 		log.Fatal(err)
 	}
-
 }

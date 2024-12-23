@@ -1,5 +1,5 @@
 {
+    "textarea": ["Message"],
     "file": ["FileElement"],
-    "text": ["Title","Year","Price"],
-    "textarea": ["About"]
+    "text": ["Title", "Email"]
 }

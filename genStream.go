@@ -46,10 +46,10 @@ func genStream(model_ []string) {
 			}
 		}
 	}
-	b_html := makeCode(data{Items: elements, StreamDirective: buildDataStream(inputs)}, globals_streamable_html)
 	b_go := makeCode(data{Inputs: inputs, Lowered: lowerMap(inputs)}, globals_streamable_go)
-	writeTmpl(b_html, componentName)
 	writeGo(b_go, componentName+"Handler.go")
+	b_html := makeCode(data{Items: elements, StreamDirective: buildDataStream(inputs)}, globals_streamable_html)
+	writeTmpl(b_html, componentName)
 	insertViewDirective([]string{"Stream", "[]*item"})
 }
 
@@ -58,17 +58,24 @@ func insertViewDirective(vd []string) {
 	closer := "}"
 	insert := "\t" + vd[0] + " " + vd[1]
 	insertLineAfter("viewdata.go", open, insert, closer)
+	insert = "\tItem *item"
+	insertLineAfter("viewdata.go", open, insert, closer)
 
-	route := "/uploadItem"
-	handler := "uploadHandler"
-	routeLine := "\t" + `mux.HandleFunc("` + route + `", ` + handler + `)`
-	insertLineAfter("router.go", "func registerRoutes(mux *http.ServeMux)", routeLine, closer)
+	newRoute([]string{"/uploadItem", "uploadHandler"})
+	// newHandler("uploadHandler", nil, []string{"\"net/http\"", "\"strings\""})
+	newRoute([]string{"/view", "viewItem"})
+	newHandler("viewItem",
+		[]byte("readDB()\nid := strings.Split(r.RequestURI, \""+
+			"/\")[2]\n\tfmt.Println(r.RequestURI, id, itemsMap[id], itemsMap)"+
+			"\n\texeTmpl(w, r, &viewData{AppName:"+
+			" itemsMap[id].Message, "+
+			"Stream: []*item{itemsMap[id]}}, \"main.html\")"),
+		[]string{"\"net/http\"", "\t\"strings\"", "\t\"fmt\""},
+	)
 
 	open = "view = &viewData"
-	closer = "}"
 	insert = "\t\t\tStream: stream,"
 	insertLineAfter("helpers.go", open, insert, closer)
-
 }
 
 func lowerMap(ins map[string][]string) (lowered map[string][]string) {
@@ -106,7 +113,7 @@ func buildDataStream(ins map[string][]string) string {
 	build := []string{
 		"<div class='stream'>",
 		"\t{{ range $k, $v :=  .Stream }}",
-		"\t\t<div class='item-outer'>",
+		"\t\t<div class='item-outer' onclick=\"window.location = '/view/{{$v.ID}}'\">",
 	}
 	var mediaElm string
 	var next_lines []string = []string{"<div class='next-lines'>"}
@@ -115,7 +122,7 @@ func buildDataStream(ins map[string][]string) string {
 			if name == "FileElement" {
 				mediaElm = "\t\t\t<div class='" +
 					"item-part media-item " + name +
-					"'><img src='{{$v.TempFileName}}'/>{{ $v." +
+					"'><img src='/{{$v.TempFileName}}'/>{{ $v." +
 					name + " }}</div>"
 			} else {
 				next_lines = append(next_lines, "\t\t\t<div class='item-part "+name+"'>{{ $v."+name+" }}</div>")
