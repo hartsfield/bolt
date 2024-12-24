@@ -212,7 +212,7 @@ func localCommand(command []string) string {
 
 func cloudCommand(command []string) string {
 	args := []string{`compute`, `ssh`, `--zone`, `us-central1-a`, `main`, `--project`, `mysterygift`, `--`}
-	tmx := "tmux send-keys -t mySession:myWindow '" + strings.Join(command, " ") + "' Enter"
+	tmx := "tmux send-keys -t dashboard:main '" + strings.Join(command, " ") + "' Enter"
 
 	args = append(args, strings.Split(tmx, " ")...)
 	cmd := exec.Command(`gcloud`, args...)
