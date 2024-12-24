@@ -1,7 +1,4 @@
 #!/bin/bash
-pkill $1
+pkill $1 || true
 go build -o $1
-case "$OSTYPE" in
-  linux*) ./$1 &>> log.txt & ;;
-  darwin*) ./$1 >> log.txt 2>&1 & ;;
-esac
+./$1 >> log.txt 2>&1 &
