@@ -2,27 +2,36 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strings"
 )
 
 func deploy(pc []string) {
-	os.Setenv("GOARCH", "amd64")
-	localCommand(strings.Split("go build -o "+rc.App.DomainName, " "))
-	gcloudSCP()
+	if pc[0] == "init" {
+		gcloudSCP()
+		return
+	}
+	cloudCommand([]string{
+		"pkill", rc.App.Command, "||", "true", "&&",
+		"cd", rc.GCloud.LiveDir + rc.App.DomainName, "&&",
+		"git", "pull", "||", "true", "&&",
+		"go", "build", "-o", rc.App.Command, "&&",
+		"mv", rc.App.Command, "~/bin", "&&",
+		rc.App.Command, "&; disown", "||", "true", "&&", "pkill", "bp",
+		"||", "true", "&&", "bp", "&;", "disown",
+	})
 }
 
 func gcloudSCP() {
 	cs := `gcloud compute scp` +
 		` --zone ` + rc.GCloud.Zone +
 		` --project ` + rc.GCloud.Project +
-		` --recurse ` + rc.App.DomainName + ` internal/bolt.conf.json ` +
+		` --recurse . ` +
 		rc.GCloud.Instance + `:` +
 		rc.GCloud.LiveDir + rc.App.DomainName
 	fmt.Println(cs)
 	localCommand(strings.Split(cs, " "))
 }
 
-func restartProxy(rc *config) {
-	cloudCommand([]string{"./" + rc.GCloud.ProxyConf + " &"})
+func restartProxy() {
+	cloudCommand([]string{"pkill", "bp", "||", "true", "&&", "bp", "&;", "disown"})
 }

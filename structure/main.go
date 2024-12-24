@@ -20,7 +20,7 @@ func main() {
 	ctx, srv := bolt()
 
 	log.Println("Waiting for connections @ http://localhost" + srv.Addr)
-	fmt.Println("\nWaiting for connections @ http://localhost" + srv.Addr)
+	fmt.Println("\n\nWaiting for connections @ http://localhost" + srv.Addr + "  -->  " + appConf.App.DomainName)
 
 	<-ctx.Done()
 }

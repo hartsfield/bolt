@@ -126,36 +126,6 @@ func exists(path string) (bool, error) {
 	return false, err
 }
 
-func remoteServiceRestart(args []string) {
-	name := args[0]
-	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
-	log.Println(cloudCommand([]string{"cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &"}))
-}
-
-func localCommand(command []string) string {
-	var cmd *exec.Cmd = &exec.Cmd{}
-	cmd.Env = append(cmd.Env, "GOARCH=amd64")
-	cmd.Env = append(cmd.Env, "GOOS=linux")
-	cmd = exec.Command(command[0], command[1:]...)
-	o, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Println("local command error: ", err, string(o))
-	}
-	return string(o)
-}
-
-func cloudCommand(command []string) string {
-	args := []string{`compute`, `ssh`, `--zone`, `us-central1-a`, `main`, `--project`, `mysterygift`, `--`}
-
-	args = append(args, command...)
-	cmd := exec.Command(`gcloud`, args...)
-	o, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Println(err)
-	}
-	return string(o)
-}
-
 func insertLineAfter(filepath, opening, insert, closing string) {
 	f, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
@@ -199,4 +169,57 @@ func insertLineAfter(filepath, opening, insert, closing string) {
 	if err := f.Close(); err != nil {
 		log.Fatal(err)
 	}
+}
+func serviceReload(p []string) {
+	if len(p) < 1 {
+		return
+	}
+	p_ := p[0]
+	b, err := os.ReadFile(p_)
+	if err != nil {
+		log.Println(err)
+	}
+	sc := config{}
+	err = json.Unmarshal(b, &sc)
+	if err != nil {
+		log.Println(err)
+	}
+	c := "cd " + sc.GCloud.LiveDir + sc.App.DomainName +
+		" && go build -o " + sc.App.Command + " && mv " +
+		sc.App.Command + " /home/" + sc.GCloud.User +
+		"/bin/ && pkill " + sc.App.Command + " ; " +
+		sc.App.Command + " &; disown"
+	fmt.Println(p_, c)
+	cloudCommand(strings.Split(c, " "))
+	restartProxy()
+}
+
+// func remoteServiceRestart(args []string) {
+// 	name := args[0]
+// 	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
+// 	log.Println(cloudCommand([]string{"cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &"}))
+// }
+
+func localCommand(command []string) string {
+	var cmd *exec.Cmd = &exec.Cmd{}
+	cmd = exec.Command(command[0], command[1:]...)
+	o, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Println("local command error: ", err, string(o))
+	}
+	return string(o)
+}
+
+func cloudCommand(command []string) string {
+	args := []string{`compute`, `ssh`, `--zone`, `us-central1-a`, `main`, `--project`, `mysterygift`, `--`}
+	tmx := "tmux send-keys -t mySession:myWindow '" + strings.Join(command, " ") + "' Enter"
+
+	args = append(args, strings.Split(tmx, " ")...)
+	cmd := exec.Command(`gcloud`, args...)
+	fmt.Println(cmd.String())
+	o, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Println(err)
+	}
+	return string(o)
 }

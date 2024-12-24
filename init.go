@@ -64,7 +64,7 @@ var (
 		{Name: "deploy", do: deploy, Info: "\nEx.: --deploy\n\nDeploys project to server using values from bolt.conf.json\n"},
 		{Name: "autonav", do: autonav, Info: "\nEx.: --autonav page1,page2,page3,pageEtc\n\nInitializes a new navbar component with the given pages\n"},
 		{Name: "autosplash", do: autosplash, Info: "\nEx.: --autosplash public/filename.png\n\nInitializes a splash screen component\n"},
-		{Name: "remote-service-restart", do: remoteServiceRestart, Info: "\nEx.: --remote-service-restart\n\nRestarts a remote service using values from bolt.conf.json\n"},
+		{Name: "remote-service-restart", do: serviceReload, Info: "\nEx.: --remote-service-restart\n\nRestarts a remote service using values from bolt.conf.json\n"},
 		{Name: "config", do: configure, Info: "\nEx.: --config\n\nInteractive configuration of bolt\n"},
 		// {Name: "add-style", do: , "Adds a style to the stylesheet of the given component, usage: bolt --add-style=component:rulename")},
 		// {Name: "build-form", do: , "Genrates an HTML form based on input")},
@@ -79,4 +79,5 @@ func init() {
 	for _, com := range flagCommands {
 		flag.Var(com, com.Name, com.Info)
 	}
+	rc = readConf()
 }
