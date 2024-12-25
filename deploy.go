@@ -13,7 +13,7 @@ func deploy(pc []string) {
 	cloudCommand([]string{
 		"pkill", rc.App.Command, "||", "true", "&&",
 		"cd", rc.GCloud.LiveDir + rc.App.DomainName, "&&",
-		"git", "pull", "||", "true", "&&",
+		"curl", "-l", rc.App.Repo + "/zipball/master", "|", "unzip", "||", "true", "&&",
 		"go", "build", "-o", rc.App.Command, "&&",
 		"mv", rc.App.Command, "~/bin", "&&",
 		rc.App.Command, "&; disown", "||", "true", "&&", "pkill", "bp",
