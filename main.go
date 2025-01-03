@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -36,49 +35,61 @@ func readFlags() {
 
 func boltInit(params []string) {
 	appName := params[0]
+
 	empty, err := isEmpty(".")
-	if !empty || err != nil || os.MkdirAll(appName, 0755) == nil {
+	fmt.Println(empty, err)
+	if empty && err != nil && os.MkdirAll(appName, 0755) == nil {
+		fmt.Println(empty, err)
 		log.Fatalln("Directory not empty, exiting...", err)
 	}
 
-	// if _, err := os.Stat("./" + appName + "/"); os.IsNotExist(err) {
-	// 	log.Fatalln("\n    > Directory", appName, "already exists, exiting.")
-	// }
-
-	// if os.MkdirAll(appName, 0755) == nil {
-	// 	log.Fatalln("Directory Exists. Exiting.")
-	// }
-
-	copyFiles("./" + appName + "/")
-
-	cmd := exec.Command("tree", "-C", "--dirsfirst", ".")
-	cmd.Dir = "./" + appName
-	b, err := cmd.Output()
-	if err != nil {
-		log.Println(err)
-	}
-
-	fmt.Println(localCommand([]string{"go", "mod", "init", "example.com/m/v2"}))
+	os.Chdir(appName)
+	copyFiles(appName)
+	b := localCommand("tree -C --dirsfirst .")
+	fmt.Println(localCommand("go mod init example.com/m/v2"))
 	fmt.Print("\n    > ", strings.ReplaceAll(string(b), "\n", "\n         "))
 	fmt.Println("\n    ##############################\n    # > Initialization complete. #\n    ##############################")
+	fmt.Println()
+	if len(params) >= 2 {
+		mkGitHubRepo := params[1]
+		if mkGitHubRepo == "git" {
+			localCommand("git init")
+			localCommand("git add .")
+			localCommand("git commit -m init_commit")
+		}
+		if len(params) >= 3 {
+			privateOrPublic := params[2]
+			localCommand("gh repo create --source=. --" + privateOrPublic)
+			localCommand("git push origin master")
+		}
+	}
 	fmt.Println()
 }
 
 func copyFiles(appdir string) {
-	os.MkdirAll(appdir+"internal/components", 0755)
-	os.MkdirAll(appdir+"internal/pages/main", 0755)
-	os.MkdirAll(appdir+"internal/shared/head", 0755)
-	os.MkdirAll(appdir+"public/media", 0755)
+	os.MkdirAll("internal/components", 0755)
+	os.MkdirAll("internal/pages/main", 0755)
+	os.MkdirAll("internal/shared/head", 0755)
+	os.MkdirAll("public/media", 0755)
 
 	for fileString, path := range files {
-		f, err := os.Create(appdir + path)
+		f, err := os.Create(path)
 		if err != nil {
 			log.Println(err)
 		}
 		f.WriteString(fileString)
 	}
 
-	err := os.Chmod(appdir+"autoload.sh", 0755)
+	writeConf(defaultConf([]string{
+		appdir,
+		"9343",
+		"us-central1-a",
+		"mysterygift",
+		"main",
+		"john",
+	}))
+
+	err := os.Chmod("autoload.sh", 0755)
 	if err != nil {
 		log.Println(err)
 	}

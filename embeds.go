@@ -28,8 +28,8 @@ var (
 	router_tmpl string
 	//go:embed structure/server.go
 	server_go_tmpl string
-	//go:embed structure/bolt.conf.json
-	bolt_conf_tmpl string
+	////go:embed structure/bolt.conf.json
+	//bolt_conf_tmpl string
 	//go:embed structure/viewdata.go
 	viewdata_go_tmpl string
 	//go:embed structure/globals.go
@@ -40,6 +40,8 @@ var (
 	globals_streamable_html string
 	//go:embed streamable/tmpls/submithandler.go
 	globals_streamable_go string
+	//go:embed structure/gitignore
+	gitignore string
 
 	files map[string]string = map[string]string{
 		head_tmpl:           "internal/shared/head/head.html",
@@ -55,6 +57,5 @@ var (
 		viewdata_go_tmpl:    "viewdata.go",
 		globals_go_tmpl:     "globals.go",
 		globals_autoload_sh: "autoload.sh",
-		bolt_conf_tmpl:      "bolt.conf.json",
 	}
 )

@@ -51,6 +51,18 @@ func genStream(model_ []string) {
 	b_html := makeCode(data{Items: elements, StreamDirective: buildDataStream(inputs)}, globals_streamable_html)
 	writeTmpl(b_html, componentName)
 	insertViewDirective([]string{"Stream", "[]*item"})
+	newRoute([]string{"/uploadItem", "uploadHandler"})
+	// newHandler("uploadHandler", nil, []string{"\"net/http\"", "\"strings\""})
+	newRoute([]string{"/view", "viewItem"})
+	newHandler("viewItem",
+		[]byte("readDB()\n        id := strings.Split(r.RequestURI, \""+
+			"/\")[2]\n\tfmt.Println(r.RequestURI, id, itemsMap[id], itemsMap)"+
+			"\n\texeTmpl(w, r, &viewData{AppName:"+
+			" itemsMap[id].Message, "+
+			"Stream: []*item{itemsMap[id]}}, \"main.html\")"),
+		[]string{"\"net/http\"", "\t\"strings\"", "\t\"fmt\""},
+	)
+
 }
 
 func insertViewDirective(vd []string) {
@@ -60,18 +72,6 @@ func insertViewDirective(vd []string) {
 	insertLineAfter("viewdata.go", open, insert, closer)
 	insert = "\tItem *item"
 	insertLineAfter("viewdata.go", open, insert, closer)
-
-	newRoute([]string{"/uploadItem", "uploadHandler"})
-	// newHandler("uploadHandler", nil, []string{"\"net/http\"", "\"strings\""})
-	newRoute([]string{"/view", "viewItem"})
-	newHandler("viewItem",
-		[]byte("readDB()\nid := strings.Split(r.RequestURI, \""+
-			"/\")[2]\n\tfmt.Println(r.RequestURI, id, itemsMap[id], itemsMap)"+
-			"\n\texeTmpl(w, r, &viewData{AppName:"+
-			" itemsMap[id].Message, "+
-			"Stream: []*item{itemsMap[id]}}, \"main.html\")"),
-		[]string{"\"net/http\"", "\t\"strings\"", "\t\"fmt\""},
-	)
 
 	open = "view = &viewData"
 	insert = "\t\t\tStream: stream,"

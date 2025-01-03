@@ -13,7 +13,7 @@
     "gcloud": {
         "command": "gcloud",
         "zone": "us-central1-a",
-        "project": "project-1",
+        "project": "mysterygift",
         "proxy_home": "/home/john/bp/",
         "livedir": "/home/john/live/",
         "user": "john",

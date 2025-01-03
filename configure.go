@@ -20,6 +20,49 @@ var answers []string = []string{
 	"", "", "~/live",
 }
 
+func writeConf(c *config) {
+	b, err := json.Marshal(c)
+	if err != nil {
+		log.Println(err)
+	}
+	f, err := os.Create("bolt.conf.json")
+	if err != nil {
+		log.Println(err)
+	}
+	f.WriteString(string(b))
+}
+
+func defaultConf(params []string) *config {
+	a := app{
+		Name:       "Bolt App",
+		DomainName: params[0],
+		Version:    "0.01",
+		Env:        env{},
+		Port:       params[1],
+		AlertsOn:   true,
+		TLSEnabled: true,
+		Repo:       "",
+	}
+	gc := gcloud{
+		Command:   "gcloud",
+		Zone:      params[2],
+		Project:   params[3],
+		Instance:  params[4],
+		User:      params[5],
+		LiveDir:   "/home/" + params[5] + "/live/",
+		ProxyHome: "/home/" + params[5] + "/bp/",
+	}
+	return &config{
+		App:    a,
+		GCloud: gc,
+	}
+}
+func gitPush() {
+	localCommand("git add .")
+	localCommand("git commit -m updates")
+	localCommand("git push origin master")
+}
+
 func configure(answerString []string) {
 	newconf := &config{}
 	var tlsBoolValue bool

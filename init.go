@@ -58,7 +58,7 @@ var (
 		{Name: "init", do: boltInit, Info: "\nEx.: --init appName\n\nInitializes a new bolt project in the directory 'appName'\n"},
 		{Name: "new-page", do: createPage, Info: "\nEx.: --new-page pageName\n\nInitializes a new page with the given name\n"},
 		{Name: "new-component", do: createComponent, Info: "\nEx.: --new-component componentName\n\nInitializes a new component with the given name\n"},
-		{Name: "new-route", do: newRoute, Info: "\nEx.: --new-route routeName\n\nInitializes a new route\n"},
+		{Name: "new-route", do: newRoute, Info: "\nEx.: --new-route routeName,handler\n\nInitializes a new route\n"},
 		{Name: "insert-component", do: insertcomponent, Info: "\nEx.: --insert-component componentName,pageName\n\nInserts a component into a page\n"},
 		{Name: "streamable", do: genStream, Info: "\nEx.: --streamable ./model.json \n\nCreates a stream of uploadable items with an upload form based on a json model\n"},
 		{Name: "deploy", do: deploy, Info: "\nEx.: --deploy\n\nDeploys project to server using values from bolt.conf.json\n"},
@@ -70,8 +70,7 @@ var (
 		// {Name: "build-form", do: , "Genrates an HTML form based on input")},
 		// {Name: "install-component", do: , "Installs a component from a git hub repo")
 	}
-	components_dir string = "internal/components/"
-	rc             *config
+	rc *config
 )
 
 func init() {
@@ -79,5 +78,4 @@ func init() {
 	for _, com := range flagCommands {
 		flag.Var(com, com.Name, com.Info)
 	}
-	rc = readConf()
 }

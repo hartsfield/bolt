@@ -4,17 +4,23 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 )
 
 func readConf() *config {
 	b, err := os.ReadFile("./bolt.conf.json")
 	if err != nil {
-		log.Println(err)
+		log.Println("No config found, using default values")
+		return defaultConf([]string{
+			"domain.com",
+			"9123",
+			"us-central1-a",
+			"project",
+			"main",
+			"linuxuser",
+		})
 	}
 	c := config{}
 	err = json.Unmarshal(b, &c)
@@ -69,23 +75,9 @@ func create(name, structure string) {
 func autoList(name string, listItems []string) {}
 func autoFlex(name string)                     {}
 
-func isEmpty(name string) (bool, error) {
-	f, err := os.Open(name)
-	if err != nil {
-		return false, err
-	}
-	defer f.Close()
-
-	_, err = f.Readdirnames(1)
-	if err == io.EOF {
-		return true, nil
-	}
-	return false, err
-}
-
 func addStyle(name string) {
 	s := strings.SplitN(name, ":", 3)
-	empty, err := isEmpty(components_dir + s[0])
+	empty, err := isEmpty("internal/components/" + s[0])
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -94,7 +86,7 @@ func addStyle(name string) {
 		log.Fatalln("Component not found:", s[0])
 	}
 
-	cssfile, err := os.OpenFile(components_dir+s[0]+"/"+s[0]+".css", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	cssfile, err := os.OpenFile("internal/components/"+s[0]+"/"+s[0]+".css", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
 	}
@@ -107,7 +99,7 @@ func addStyle(name string) {
 	fmt.Println("\n    > css rule added to component:")
 	fmt.Println("\n            rule:", s[1], "{}")
 	fmt.Println("       component:", s[0])
-	fmt.Println("        modified:", components_dir+s[0]+"/"+s[0]+".css")
+	fmt.Println("        modified:", "internal/components/"+s[0]+"/"+s[0]+".css")
 	fmt.Println()
 	fmt.Println()
 }
@@ -187,7 +179,7 @@ func serviceReload(p []string) {
 	c := "cd " + sc.GCloud.LiveDir + sc.App.DomainName +
 		" && go build -o " + sc.App.Command + " && mv " +
 		sc.App.Command + " /home/" + sc.GCloud.User +
-		"/bin/ && pkill " + sc.App.Command + " ; " +
+		"/bin/ && pkill -f" + sc.App.Command + " ; " +
 		sc.App.Command + " &; disown"
 	fmt.Println(p_, c)
 	cloudCommand(strings.Split(c, " "))
@@ -199,27 +191,3 @@ func serviceReload(p []string) {
 // 	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
 // 	log.Println(cloudCommand([]string{"cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &"}))
 // }
-
-func localCommand(command []string) string {
-	var cmd *exec.Cmd = &exec.Cmd{}
-	cmd = exec.Command(command[0], command[1:]...)
-	o, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Println("local command error: ", err, string(o))
-	}
-	return string(o)
-}
-
-func cloudCommand(command []string) string {
-	args := []string{`compute`, `ssh`, `--zone`, `us-central1-a`, `main`, `--project`, `mysterygift`, `--`}
-	tmx := "tmux send-keys -t dashboard:main '" + strings.Join(command, " ") + "' Enter"
-
-	args = append(args, strings.Split(tmx, " ")...)
-	cmd := exec.Command(`gcloud`, args...)
-	fmt.Println(cmd.String())
-	o, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Println(err)
-	}
-	return string(o)
-}
