@@ -20,8 +20,6 @@ var (
 	handlers_go_tmpl string
 	//go:embed structure/helpers.go
 	helpers_go_tmpl string
-	//go:embed structure/logging.go
-	logging_go_tmpl string
 	//go:embed structure/main.go
 	main_go_tmpl string
 	//go:embed structure/router.go
@@ -50,7 +48,6 @@ var (
 		page_tmpl:           "internal/pages/main/main.html",
 		handlers_go_tmpl:    "handlers.go",
 		helpers_go_tmpl:     "helpers.go",
-		logging_go_tmpl:     "logging.go",
 		main_go_tmpl:        "main.go",
 		router_tmpl:         "router.go",
 		server_go_tmpl:      "server.go",
