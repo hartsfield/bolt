@@ -89,7 +89,21 @@ func copyFiles(appdir string) {
 		"john",
 	}))
 
-	err := os.Chmod("autoload.sh", 0755)
+	f, err := os.Create("autoload.sh")
+	if err != nil {
+		log.Println(err)
+	}
+	_, err = f.Write([]byte("# use in n/vim to restart on save:\n" +
+		"# :autocmd BufWritePost * silent! !./autoload.sh\n" +
+		"#!/bin/bash\n" +
+		"pkill " + appdir + " || true\n" +
+		"go build -o " + appdir + "\n" +
+		"./" + appdir + " >> log.txt 2>&1 &"))
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = os.Chmod("autoload.sh", 0755)
 	if err != nil {
 		log.Println(err)
 	}

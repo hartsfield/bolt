@@ -18,7 +18,7 @@ func deploy(pc []string) {
 	// l_com := "git add . && git commit -m \"updates\" && git push -u origin master"
 	c_com := "pkill -f " + rc.App.DomainName + " || true && cd " + rc.GCloud.LiveDir + " && rm -rf " +
 		rc.App.DomainName + " || true && curl -o tmp.zip -L " + rc.App.Repo +
-		"/zipball/master && unzip tmp.zip && mv *" + rc.App.DomainName + "-* " +
+		"/zipball/master && unzip tmp.zip && mv *" + strings.Split(rc.App.Repo, "/")[3] + "-* " +
 		rc.App.DomainName + " && rm tmp.zip && cd " + rc.App.DomainName + " && go build -o " +
 		rc.App.DomainName + " && ./" + rc.App.DomainName + " &; disown || true && pkill bp " +
 		"|| true && bp &; disown"
