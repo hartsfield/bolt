@@ -9,7 +9,9 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -79,10 +81,10 @@ func copyFiles(appdir string) {
 		}
 		f.WriteString(fileString)
 	}
-
+	port := strconv.Itoa(rand.Intn(9999) + 9000)
 	writeConf(defaultConf([]string{
 		appdir,
-		"9343",
+		port,
 		"us-central1-a",
 		"mysterygift",
 		"main",
@@ -101,6 +103,7 @@ func copyFiles(appdir string) {
 		"#!/bin/bash\n" +
 		"pkill " + appdir + " || true\n" +
 		"go build -o " + appdir + "\n" +
+		"echo http://localhost:" + port + "\n" +
 		"./" + appdir + " >> log.txt 2>&1 &"))
 	if err != nil {
 		log.Println(err)
