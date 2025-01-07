@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"log"
 	"mime/multipart"
@@ -15,31 +14,26 @@ import (
 var token string = "TOKEN_GOES_HERE_IF_NEEDED"
 
 func main() {
+	b, err := os.ReadFile("testApp/bolt.conf.json")
+	if err != nil {
+		log.Println(err)
+	}
+	p := strings.Split(strings.Split(string(b), "port\":\"")[1], "\"")[0]
 	log.Println(len(os.Args))
-	if len(os.Args) > 1 {
-		if len(os.Args) < 4 {
-			fmt.Println("Requires 1 - 3 arguments: ")
-			fmt.Println("  btst remote_url title message")
-			fmt.Println("using generic test data...")
-			os.Args = append(os.Args, []string{"a thingy", "a picture of a thing", "fake@email.x"}...)
-		}
-	} else {
-		fmt.Println("Usage:")
-		fmt.Println("  btst remote_url title_txt message_txt")
-		fmt.Println("Exiting.")
-		os.Exit(0)
+	if len(os.Args) < 3 {
+		os.Args = append(os.Args, []string{"a thingy", "a picture of a thing", "fake@email.x"}...)
 	}
 	var client *http.Client = &http.Client{}
-	var remoteURL string = os.Args[1]
+	var remoteURL string = "http://localhost:" + p + "/uploadItem"
 	images, err := os.ReadDir("img")
 	if err != nil {
 		log.Println(err)
 	}
 	for _, img := range images {
 		values := map[string]io.Reader{
-			"Title":     strings.NewReader(os.Args[2]),
-			"MyText":    strings.NewReader(os.Args[3]),
-			"Email":     strings.NewReader(os.Args[4]),
+			"Title":     strings.NewReader(os.Args[1]),
+			"MyText":    strings.NewReader(os.Args[2]),
+			"Email":     strings.NewReader(os.Args[3]),
 			"Media":     mustOpen("img/" + img.Name()),
 			"mediaType": strings.NewReader(strings.Split(img.Name(), ".")[1]),
 		}

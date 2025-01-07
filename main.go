@@ -31,6 +31,15 @@ func readFlags() {
 		}
 	}
 	if noFlagsSet {
+		empty, err := isEmpty(".")
+		if err != nil {
+			log.Println(err)
+		}
+		if !empty {
+			fmt.Println("Directory not empty, exiting.")
+			os.Exit(0)
+		}
+
 		boltInit([]string{""})
 	}
 }
