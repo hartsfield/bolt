@@ -1,30 +1,18 @@
 #!/bin/bash
 
-# make an empty directoy and cd into
-mkdir testApp && cd testApp
+mkdir testApp && cd testApp        # make an empty directoy and cd into
 
-# initiate app
-bolt
+bolt                               # initiate app
+bolt --new-component=test          # create a component called test
+bolt --insert-component=test,main  # insert test into the main page
+bolt --autonav about,merch,contact # create a nav bar and insert the necessary components
 
-# create a component called test and insert it into the main page
-bolt --new-component=test
-bolt --insert-component=test,main
-
-# create a nav bar and insert the necessary components
-bolt --autonav about,contact,footer
-
-# create an upload form and stream of uploaded data
-touch model.json
 echo '{
     "textarea": ["MyText"],
     "file": ["Media"],
     "text": ["Title", "Email"]
-}' >> model.json
-bolt --streamable model.json
+}' >> model.json                   # echo the data into a file "model.json"
+bolt --streamable model.json       # use model.json to create the form and data stream
 
-# run the app
-./autoload.sh
-
-# go back up to the test dir and move run the test
-cd ..
-go run . 
+./autoload.sh                      # run the app
+cd .. && go run main.go            # cd back up to the test dir and run the test

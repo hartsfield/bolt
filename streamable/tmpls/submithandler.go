@@ -31,7 +31,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	ajaxResponse(w, map[string]string{
 		"success": "true",
 		"replyID": data.ID,
-		"item":    string(b),
+		"itemString":    string(b),
 	})
 	saveJSON()
 }

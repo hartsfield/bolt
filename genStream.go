@@ -12,6 +12,108 @@ import (
 var (
 	inputs   map[string][]string = make(map[string][]string)
 	elements map[string]string   = make(map[string]string)
+	streamjs string              = `async function submitPost() {
+        const form = document.getElementById("uploadForm");
+        const data = new FormData(form);
+        let response = await fetch("/uploadItem", {
+            method: "POST",
+            body: data,
+        });
+
+        let res = await response.json();
+        handleResponse(res);
+    }
+
+    function handleResponse(res) {
+        if (res.success == "true") {
+            window.location = window.location.origin;
+        } else {
+            document.getElementById("errorField").innerHTML = res.error;
+        }
+    }`
+	streamcss string = `body, html {
+    margin: 3em 0.5em;
+}
+input, textarea {
+    border: none;
+}
+::placeholder {
+    color: var(--html-bg);
+    opacity: 1; /* Firefox */
+}
+.stream {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 0.5em;
+}
+.uploadForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+    margin: 1em;
+}
+.uploadForm > * {
+    padding: 0.3em;
+    width: 100%;
+    border-radius: 0.3em;
+    margin-top: 0.5em;
+    background: #FFFFFF;
+    border: 1px solid #e8e8e8;
+}
+.form-submit {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    background: #f38d1c;
+    border: 1px solid orange;
+    color: white;
+}
+.stream > div {
+    margin: 0.5em;
+    padding: 0.5em;
+    border-radius: 0.4em;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: stretch;
+    background: #f1f1f1;
+    cursor: pointer;
+}
+.media-item > img {
+    width: 100%;
+    border-radius: 0.4em;
+}
+.next-lines {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background: #e06767;
+    color: #e8e8e8;
+    padding: 0.6em;
+    border-radius: 0.3em;
+    font-size: 0.9em;
+    align-items: center;
+}
+.About {
+    width: 100%;
+}
+@media screen and (orientation:landscape) {
+    body, html {
+        max-width: 80ch;
+    }
+    .stream {
+        max-width: 80ch;
+    }
+}
+
+`
 )
 
 type data struct {
@@ -20,8 +122,6 @@ type data struct {
 	Items           map[string]string
 	StreamDirective string
 }
-
-// var jsn string = `{ "file": ["FileElement"], "text": ["Title","Year","Price"], "textarea": ["About"] }`
 
 // The model is just a json file
 func genStream(model_ []string) {
@@ -49,7 +149,13 @@ func genStream(model_ []string) {
 	b_go := makeCode(data{Inputs: inputs, Lowered: inputs}, globals_streamable_go)
 	writeGo(b_go, componentName+"Handler.go")
 	b_html := makeCode(data{Items: elements, StreamDirective: buildDataStream(inputs)}, globals_streamable_html)
-	writeTmpl(b_html, componentName)
+	writeTmpl(b_html, componentName, ".html")
+	b_css := makeCode(data{}, streamcss)
+	writeTmpl(b_css, componentName, ".css")
+	b_js := makeCode(data{}, streamjs)
+	writeTmpl(b_js, componentName, ".js")
+	insertcomponent([]string{componentName, "main"})
+
 	insertViewDirective([]string{"Stream", "[]*item"})
 	newRoute([]string{"/uploadItem", "uploadHandler"})
 	// newHandler("uploadHandler", nil, []string{"\"net/http\"", "\"strings\""})
@@ -141,16 +247,19 @@ func buildDataStream(ins map[string][]string) string {
 	return strings.Join(build, "\n")
 }
 
-func writeTmpl(btxt []byte, filename string) {
-	err := os.MkdirAll("internal/components/"+filename+"/", os.ModePerm)
+func writeTmpl(btxt []byte, filename, ext string) {
+	err := os.MkdirAll("internal/components/"+filename, os.ModePerm)
 	if err != nil {
 		log.Println(err)
 	}
-	err = os.WriteFile("internal/components/"+filename+"/"+filename+".html", btxt, 0644)
+	mkMultiFile(btxt, "internal/components/"+filename+"/"+filename, ext)
+}
+
+func mkMultiFile(btxt []byte, dir, ext string) {
+	err := os.WriteFile(dir+ext, btxt, 0644)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
-	insertcomponent([]string{filename, "main"})
 }
 
 func writeGo(btxt []byte, filename string) {

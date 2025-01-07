@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"mime/multipart"
@@ -9,26 +11,52 @@ import (
 	_ "net/http/cookiejar"
 	"os"
 	"strings"
+	"time"
 )
 
+type resp struct {
+	Success    string `json:"success"`
+	ReplyID    string `json:"replyID"`
+	ItemString string `json:"itemString"`
+	Item       *item  `json:"item"`
+}
+
+type item struct {
+	Media        string    `json:"Media"`
+	Title        string    `json:"Title"`
+	Email        string    `json:"Email"`
+	MyText       string    `json:"MyText"`
+	ID           string    `json:"ID"`
+	TS           time.Time `json:"TS"`
+	MediaType    string    `json:"mediaType"`
+	TempFileName string    `json:"tempFileName"`
+}
+
 var token string = "TOKEN_GOES_HERE_IF_NEEDED"
+var port string
 
 func main() {
 	b, err := os.ReadFile("testApp/bolt.conf.json")
 	if err != nil {
 		log.Println(err)
 	}
-	p := strings.Split(strings.Split(string(b), "port\":\"")[1], "\"")[0]
-	log.Println(len(os.Args))
+	port = strings.Split(strings.Split(string(b), "port\":\"")[1], "\"")[0]
+	sendPost()
+	fmt.Println("\n > > > >    http://localhost:" + port)
+	fmt.Println()
+}
+
+func sendPost() {
 	if len(os.Args) < 3 {
 		os.Args = append(os.Args, []string{"a thingy", "a picture of a thing", "fake@email.x"}...)
 	}
 	var client *http.Client = &http.Client{}
-	var remoteURL string = "http://localhost:" + p + "/uploadItem"
+	var remoteURL string = "http://localhost:" + port + "/uploadItem"
 	images, err := os.ReadDir("img")
 	if err != nil {
 		log.Println(err)
 	}
+	fmt.Print("\n\n\n\n\n")
 	for _, img := range images {
 		values := map[string]io.Reader{
 			"Title":     strings.NewReader(os.Args[1]),
@@ -43,7 +71,20 @@ func main() {
 		if err != nil {
 			log.Println("Request Error:", err)
 		}
-		log.Println(res.Status)
+		var r resp = resp{}
+		by, err := io.ReadAll(res.Body)
+		if err != nil {
+			log.Println(err)
+		}
+		err = json.Unmarshal(by, &r)
+		if err != nil {
+			log.Println("test", err)
+		}
+		err = json.Unmarshal([]byte(r.ItemString), &r.Item)
+		if err != nil {
+			log.Println("test", err)
+		}
+		fmt.Println("Success:", r.Success, r.ReplyID)
 	}
 }
 
