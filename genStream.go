@@ -58,7 +58,6 @@ func genStream(model_ []string) {
 		[]byte("readDB()\n        id := strings.Split(r.RequestURI, \""+
 			"/\")[2]\n\tfmt.Println(r.RequestURI, id, itemsMap[id], itemsMap)"+
 			"\n\texeTmpl(w, r, &viewData{AppName:"+
-			" itemsMap[id].Message, "+
 			"Stream: []*item{itemsMap[id]}}, \"main.html\")"),
 		[]string{"\"net/http\"", "\t\"strings\"", "\t\"fmt\""},
 	)
