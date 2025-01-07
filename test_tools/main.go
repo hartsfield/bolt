@@ -1,32 +1,4 @@
-#!/bin/bash
-
-# initiate app
-bolt
-
-# create a component called test and insert it into the main page
-bolt --new-component=test
-bolt --insert-component=test,main
-
-# create a nav bar and insert the necessary components
-bolt --autonav about,contact,footer
-
-# create an upload form and stream of uploaded data
-touch model.json
-echo '{
-    "textarea": ["MyText"],
-    "file": ["Media"],
-    "text": ["Title", "Email"]
-}' >> model.json
-bolt --streamable model.json
-
-# run the app
-./autoload.sh
-
-# create a test (add images to img folder!)
-mkdir img
-touch img/placeholder.png
-touch testBot.go
-echo 'package main
+package main
 
 import (
 	"bytes"
@@ -130,5 +102,4 @@ func mustOpen(f string) *os.File {
 		panic(err)
 	}
 	return r
-}' >> testBot.go
-echo "Add images to img/ directory !!!"
+}

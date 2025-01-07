@@ -21,14 +21,7 @@ func itemView(id string) *item {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
-	mr, err := r.MultipartReader()
-	if err != nil {
-		log.Println(err)
-	}
-
-	var data *item = &item{ID: genPostID(10)}
-	uploadHandler_(mr, w, data)
-
+        data := partFormData(r, w)
 	stream = append(stream, data)
 
 	b, err := json.Marshal(data)
@@ -41,6 +34,37 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		"item":    string(b),
 	})
 	saveJSON()
+}
+func partFormData(r *http.Request, w http.ResponseWriter) *item {
+	mr, err := r.MultipartReader()
+	if err != nil {
+		log.Println(err)
+	}
+
+	var data *item = &item{ID: genPostID(10)}
+
+for {
+                part, err_part := mr.NextPart()
+                if err_part == io.EOF {
+                        break
+                }
+                {{- range $k, $v :=  .Inputs }}
+                {{- if ne $k "file" }}
+                {{- range $k_, $v_ :=  $v }}
+                if part.FormName() == "{{$v_}}" {
+                        buf := new(bytes.Buffer)
+                        buf.ReadFrom(part)
+                        data.{{$v_}} = buf.String()
+                }
+                {{- end }}
+                {{else}}
+                if part.FormName() == "{{index $.Inputs "file" 0}}" {
+                        handleFile(w, part, data)
+                }
+                {{- end }}
+                {{- end }}
+        }
+        return data
 }
 func handleFile(w http.ResponseWriter, part *multipart.Part, data *item) {
 	fileBytes, err := io.ReadAll(io.LimitReader(part, 10<<20))
@@ -139,26 +163,4 @@ type item struct {
         MediaType{{"\t"}}string{{"\t"}}`json:"mediaType"`
         TempFileName{{"\t"}}string{{"\t"}}`json:"tempFileName"`
 }
-func uploadHandler_(mr *multipart.Reader, w http.ResponseWriter, data *item) {
-for {
-                part, err_part := mr.NextPart()
-                if err_part == io.EOF {
-                        break
-                }
-                {{- range $k, $v :=  .Inputs }}
-                {{- if ne $k "file" }}
-                {{- range $k_, $v_ :=  $v }}
-                if part.FormName() == "{{$v_}}" {
-                        buf := new(bytes.Buffer)
-                        buf.ReadFrom(part)
-                        data.{{$v_}} = buf.String()
-                }
-                {{- end }}
-                {{else}}
-                if part.FormName() == "{{index $.Inputs "file" 0}}" {
-                        handleFile(w, part, data)
-                }
-                {{- end }}
-                {{- end }}
-        }
-}
+

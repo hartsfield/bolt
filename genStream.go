@@ -46,7 +46,7 @@ func genStream(model_ []string) {
 			}
 		}
 	}
-	b_go := makeCode(data{Inputs: inputs, Lowered: lowerMap(inputs)}, globals_streamable_go)
+	b_go := makeCode(data{Inputs: inputs, Lowered: inputs}, globals_streamable_go)
 	writeGo(b_go, componentName+"Handler.go")
 	b_html := makeCode(data{Items: elements, StreamDirective: buildDataStream(inputs)}, globals_streamable_html)
 	writeTmpl(b_html, componentName)
@@ -119,7 +119,7 @@ func buildDataStream(ins map[string][]string) string {
 	var next_lines []string = []string{"<div class='next-lines'>"}
 	for _, in := range ins {
 		for _, name := range in {
-			if name == "FileElement" {
+			if name == "Media" {
 				mediaElm = "\t\t\t<div class='" +
 					"item-part media-item " + name +
 					"'><img src='/{{$v.TempFileName}}'/>{{ $v." +
