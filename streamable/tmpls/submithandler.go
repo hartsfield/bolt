@@ -22,7 +22,7 @@ func itemView(id string) *item {
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
         data := partFormData(r, w)
-	stream = append(stream, data)
+	stream = append([]*item{data}, stream...)
 
 	b, err := json.Marshal(data)
 	if err != nil {
@@ -43,7 +43,7 @@ func partFormData(r *http.Request, w http.ResponseWriter) *item {
 
 	var data *item = &item{ID: genPostID(10)}
 
-for {
+        for {
                 part, err_part := mr.NextPart()
                 if err_part == io.EOF {
                         break
@@ -124,7 +124,8 @@ func readDB() {
 
 		slices.Reverse(items)
 
-		stream = append(stream, items...)
+		// stream = append(stream, items...)
+                stream = items
                 for _, item := range stream {
                         itemsMap[item.ID] = item
                 }
@@ -151,6 +152,8 @@ func saveJSON() {
 	if _, err = f.WriteString(string(b)); err != nil {
 		log.Println(err)
 	}
+
+        readDB()
 }
 type item struct {
         {{- range $k, $v :=  .Inputs }}

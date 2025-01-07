@@ -159,7 +159,7 @@ func genStream(model_ []string) {
 	insertViewDirective([]string{"Stream", "[]*item"})
 	newRoute([]string{"/uploadItem", "uploadHandler"})
 	// newHandler("uploadHandler", nil, []string{"\"net/http\"", "\"strings\""})
-	newRoute([]string{"/view", "viewItem"})
+	newRoute([]string{"/view/", "viewItem"})
 	newHandler("viewItem",
 		[]byte("readDB()\n        id := strings.Split(r.RequestURI, \""+
 			"/\")[2]\n\tfmt.Println(r.RequestURI, id, itemsMap[id], itemsMap)"+
