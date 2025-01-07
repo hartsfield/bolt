@@ -93,6 +93,9 @@ func copyFiles(appdir string) {
 	if err != nil {
 		log.Println(err)
 	}
+	if appdir == "" {
+		appdir = "boltapp"
+	}
 	_, err = f.Write([]byte("# use in n/vim to restart on save:\n" +
 		"# :autocmd BufWritePost * silent! !./autoload.sh\n" +
 		"#!/bin/bash\n" +
