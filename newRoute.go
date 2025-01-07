@@ -11,7 +11,7 @@ func newRoute(params []string) {
 		route = "/" + route
 	}
 	handler := params[1]
-	routeLine := "\t" + `mux.HandleFunc("` + route + `/", ` + handler + `)`
+	routeLine := "\t" + `mux.HandleFunc("` + route + `", ` + handler + `)`
 	insertLineAfter("router.go", "func registerRoutes(mux *http.ServeMux)", routeLine, "}")
 	// if len(params) > 2 {
 	// 	newHandler(handler, []byte(params[2]), nil)
