@@ -34,6 +34,7 @@ a dynamic social media platform.
         $ ./testproject.sh
 
 <img width="582" alt="Screenshot 2025-01-07 at 4 13 35 AM" src="https://github.com/user-attachments/assets/c071f2ec-a85a-4165-a896-a6920e8ca4c0" />
+
  - Create a bolt app:
  
         $ cd
