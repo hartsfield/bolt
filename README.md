@@ -133,24 +133,24 @@ The structure of a bolt app looks like this:
                      └── componentName.js ─────────────────────────────────────
             
              
-A bolt app is composed of html templates called `pages` and `components`. `pages`
-are usually composed of components, and components can also be composed of
-other components. 
+A bolt app is composed of html templates called `pages` and `components`. 
+`pages`are usually composed of components, and components can also be composed
+of other components. 
 
 # What is the bolt program? `bolt` is a Go program for building web applications using the bolt architecture
 
-Bolt is not a third-party dependency, `bolt` is a Go program that generates the 
-scaffolding for a web application using the `bolt architecture`, a component 
-based model-view-controller architecture, along with server code, and other
-files that are useful for rapid prototyping and development.
+Bolt is not a third-party dependency, `bolt` is a Go program designed for rapid
+prototyping and development that generates the scaffolding for a web 
+application using the `bolt architecture`.
 
 NOTE: Bolt is under heavy development and is still alpha. At this time,
 bolt can be used to build single-page static websites, but in the future, bolt 
 will be able to aid in the development of large dynamic websites, and also help
 generate code for forms and database models. 
 
-I'm already using bolt to build [TagMachine](https://github.com/hartsfield/machinetag),
-a dynamic social media platform.
+I'm already using bolt to build 
+[TagMachine](https://github.com/hartsfield/machinetag), a dynamic social 
+media platform.
 
 ## Quickstart
 
@@ -181,6 +181,9 @@ a dynamic social media platform.
  - Create a component and insert it into the main page:
         
         $ bolt --new-component=test && bolt --insert-component=test
+ - Automatically create a navigation bar using bolt:
+
+        $ bolt --autonav=section1,section2,section3
  - Add a new route and handler:
 
         $ bolt --new-route=path,handlerName
@@ -204,9 +207,6 @@ a dynamic social media platform.
  - Convert data modeled in JSON into code for forms and basic database procedures
  - Install components from third party git repos
 
-Automatically create a navigation bar using bolt:
-
-    bolt --autonav=section1,section2,section3
 
 This command generates a navigation bar component, and three other components, 
 one for each section. The sections have no content yet, so can't be seen, but
