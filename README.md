@@ -25,30 +25,29 @@ the user as a wikipedia article.
 A template could be as little as one line of html containg a `template 
 directive`, which are wrapped in currly braces in go. 
 
-                     <h1>{{.Title}}</h1>         <-- page.html
-                     
+                     <h1>{{.Title}}</h1>          <-- page.html with template
+                                                      directive in curly braces
                               |
                               |          
                               v
-
-        var v viewData                            <--      These lines turn an
-        redis.HGETALL(context, "pageData").Scan(&v)     instance of a viewData
-                                                           type into an object
-        v == *v{Title: "BOLT"}                          containing the data we 
-                                                   retrieved from the database
-                              |                              
+        var v viewData                            <-- These lines turn an
+        redis.HGETALL(context, "pageData").Scan(&v)   instance of a viewData
+                                                      type into an object
+        v == *v{Title: "BOLT"}                        containing the data we 
+                                                      retrieved from the 
+                              |                       database
                               |                            
                               v
 
-    templates.Exec("page.html", &v)               <-- compile page.html with v
+       templates.Exec("page.html", &v)               <-- compile page.html with &v
                                                               
                               |
                               |
                               v
 
-                        <h1>BOLT</h1>             <--     The directive is now
-                                                             replaced with the 
-                                                                     view data.
+                        <h1>BOLT</h1>             <-- The directive is now
+                                                      replaced with the 
+                                                      view data.
                                                                     
 
 An enterprise app will likely store data for different page `view`s in a
