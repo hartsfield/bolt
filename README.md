@@ -72,39 +72,78 @@ a dynamic social media platform.
 
 The structure of a bolt app looks like this:
 
-    > .
-         ├── internal
-         │   ├── components
-         │   │   ├── footer
-         │   │   │   ├── footer.css
-         │   │   │   ├── footer.js
-         │   │   │   └── footer.tmpl
-         │   │   └── head
-         │   │       └── head.tmpl
-         │   ├── pages
-         │   │   └── main
-         │   │       └── main.tmpl
-         │   └── shared
-         │       ├── css
-         │       │   └── main.css
-         │       └── js
-         │           └── main.js
-         ├── public
-         │   └── media
-         ├── autoload.sh
-         ├── bolt_conf.json
-         ├── Dockerfile
-         ├── globals.go
-         ├── handlers.go
-         ├── helpers.go
-         ├── logging.go
-         ├── main.go
-         ├── restart-service.sh
-         ├── server.go
-         └── viewdata.go
-         
-         12 directories, 18 files
-
+    boltApp/
+    ├──────────────────────────────────────────────────────────────────────────
+    │
+    │                        ------  FILES  ------
+    │
+    │    
+    ├── bolt.conf.json   ───── Configure the app.
+    │
+    ├── autoload.sh      ───── Start and restart the app.
+    │
+    ├── main.go          ───── func main() - Where the app is initially executed.
+    ├── globals.go       ───── Global variables all in one place.
+    ├── helpers.go       ───── Some helper functions, also contains functions
+    │                          that are unused, but will probably be needed in 
+    │                          most apps. May be turned into a seperate package.
+    │ 
+    ├── server.go        ───── Server stuff. These files can be edited manually
+    ├── router.go              or bolt can automatically add routes
+    ├── handlers.go            and handlers as well
+    │ 
+    ├── viewdata.go      ───── The data that we use to "fill out" the template.
+    │                          If we add a component that will handle some 
+    │                          new data from the server, we have to edit this.
+    │ 
+    │ 
+    │                        ------ FOLDERS ------
+    │ 
+    │
+    ├── public/ ────────────── This folder is served to the web, and will──────
+    │   └── media/             ususally only contain media.
+    │
+    │
+    │    
+    └── internal/ ──────────── This folder contains "components" and "pages".──
+        │                      This folder itself is not served to the web, but
+        │                      the files it contains will be "compiled" into
+        │                      a page that will be served on the web by our app.
+        │ 
+        │ 
+        │ 
+        ├── shared/ ────────── This folder contains css, html, and javascriptp─
+        │      │               that will be included in the <head> of every 
+        │      │               page served, and so the rules here effect
+        │      │               every component/page.  
+        │      │                
+        │      │                
+        │      └─────────── head/       
+        │                    ├── head.css  
+        │                    ├── head.html 
+        │                    └── head.js
+        │ 
+        │ 
+        │ 
+        ├── pages/ ────────── This folder contains "pages", which are folders──
+        │      │              containing html templates, composed of components.
+        │      │                
+        │      │                
+        │      └───────────── pageName/     
+        │                      └── pageName.html
+        │ 
+        │ 
+        │ 
+        └── components/ ───── This folder contains "components", each housed──
+               │              in their own directory, named after the component. 
+               │   
+               │
+               └── componentName/
+                     ├── componentName.css
+                     ├── componentName.html
+                     └── componentName.js ─────────────────────────────────────
+            
+             
 A bolt app is composed of html templates called `pages` and `components`. `pages`
 are usually composed of components, and components can also be composed of
 other components. 

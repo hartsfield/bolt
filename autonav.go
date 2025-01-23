@@ -29,8 +29,8 @@ func autonav_create(name string, tmpl_ *os.File, sections []string) {
 	for _, section := range sections {
 		createComponent([]string{section})
 		insertcomponent([]string{section})
-		navListHTML = navListHTML + `<li onclick="jumpTo('section-` +
-			section + `')">` + section + `</li>` + "\n"
+		navListHTML = navListHTML + `<li onclick="jumpTo('` +
+			section + `-outer')">` + section + `</li>` + "\n"
 	}
 
 	tmpl_.WriteString(`<div class="navbar-outer">
