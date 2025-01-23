@@ -137,8 +137,7 @@ A bolt app is composed of html templates called `pages` and `components`. `pages
 are usually composed of components, and components can also be composed of
 other components. 
 
-# What is the bolt program? `bolt` is a Go program for building web 
-applications using the bolt architecture
+# What is the bolt program? `bolt` is a Go program for building web applications using the bolt architecture
 
 Bolt is not a third-party dependency, `bolt` is a Go program that generates the 
 scaffolding for a web application using the `bolt architecture`, a component 
