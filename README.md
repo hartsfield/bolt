@@ -67,8 +67,7 @@ used to refer to an application built with the bolt architecture, usually a web
 application.
 
 The structure of a bolt app is important to understand. It's not complex, and 
-once we understand the structure of a bolt app, we can hack on any app built 
-using the bolt architecture.
+once we understand the structure of a bolt app, we can hack on any bolt app. 
 
 The structure of a bolt app looks like this:
 
