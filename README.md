@@ -61,10 +61,10 @@ be interfaced with any databse.
 
 ### Directory Structure/Folder Hierarchy
 
-Any application built using the `bolt architecture` should be designed with the
-following directory structure in mind. Herein, the term `bolt app`, will be 
-used to refer to an application built with the `bolt architecture`, usually a 
-web application.
+Herein, the term `bolt app` refers to an application built using the
+`bolt architecture`, usually a web application. Any application built using the
+`bolt architecture` should be designed with the following directory structure 
+in mind. 
 
 Comprehending this directory structure is important in understanding `bolt 
 architecutre`. It's not complex, but it is essential, and once we understand 
