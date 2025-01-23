@@ -61,15 +61,17 @@ be interfaced with any databse.
 
 ## Directory Structure/Folder Hierarchy
 
-Any application built using the bolt architecture should be designed with the
+Any application built using the `bolt architecture` should be designed with the
 following directory structure in mind. Herein, the term `bolt app`, will be 
-used to refer to an application built with the bolt architecture, usually a web
-application.
+used to refer to an application built with the `bolt architecture`, usually a 
+web application.
 
-The structure of a bolt app is important to understand. It's not complex, and 
-once we understand the structure of a bolt app, we can hack on any bolt app. 
+Comprehending this directory structure is important in understanding `bolt 
+architecutre`. It's not complex, but it is essential, and once we understand 
+the structure of a an app built using the `bolt architecture`, we can hack on
+any `bolt app`. 
 
-The structure of a bolt app looks like this:
+The structure of a `bolt app` looks like this:
 
     boltApp/
     │──────────────────────────────── FILES ───────────────────────────────────
@@ -151,16 +153,15 @@ template directives.
 Once a component is created, it must then be added to a `page` by specifying it 
 in a template directive within that `page`.
 
-# What is the bolt program? `bolt` is a Go program for building web applications using the bolt architecture
+# What is the `bolt` program? `bolt` is a Go program for building `bolt apps`
 
-Bolt is not a third-party dependency, `bolt` is a Go program designed for rapid
-prototyping and development that generates the scaffolding for a web 
-application using the `bolt architecture`.
+`bolt` is not a third-party dependency, `bolt` is a Go program designed for rapid
+prototyping and development, generating scaffolding and useful tooling for
+building web applications using the `bolt architecture`.
 
-NOTE: Bolt is under heavy development and is still alpha. At this time,
-bolt can be used to build single-page static websites, but in the future, bolt 
-will be able to aid in the development of large dynamic websites, and also help
-generate code for forms and database models. 
+NOTE: `bolt` is under heavy development and still alpha. At this time,
+`bolt` can be used to build single-page static websites, but in the future, bolt 
+will be able to aid in the production of large dynamic websites.
 
 I'm already using bolt to build 
 [TagMachine](https://github.com/hartsfield/machinetag), a dynamic social 
