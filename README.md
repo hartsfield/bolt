@@ -102,41 +102,30 @@ The structure of a bolt app looks like this:
     │
     ├── public/ ─────────────  This folder is served to the web, and will──────
     │   └── media/             ususally only contain media.
-    │
-    │
     │    
     └── internal/ ───────────  This folder contains "components" and "pages".──
         │                      This folder itself is not served to the web, but
         │                      the files it contains will be "compiled" into
         │                      a page that will be served on the web by our app.
         │ 
-        │ 
-        │ 
         ├── shared/ ─────────  This folder contains css, html, and javascriptp─
         │      │               that will be included in the <head> of every 
         │      │               page served, and so the rules here effect
         │      │               every component/page.  
-        │      │                
         │      │                
         │      └─────────── head/       
         │                    ├── head.css  
         │                    ├── head.html 
         │                    └── head.js
         │ 
-        │ 
-        │ 
         ├── pages/ ────────── This folder contains "pages", which are folders──
         │      │              containing html templates, composed of components.
-        │      │                
         │      │                
         │      └───────────── pageName/     
         │                      └── pageName.html
         │ 
-        │ 
-        │ 
         └── components/ ───── This folder contains "components", each housed──
                │              in their own directory, named after the component. 
-               │   
                │
                └── componentName/
                      ├── componentName.css
