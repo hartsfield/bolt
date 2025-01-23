@@ -137,6 +137,21 @@ A bolt app is composed of html templates called `pages` and `components`.
 `pages`are usually composed of components, and components can also be composed
 of other components. 
 
+Components are stored in `internal/components`, and are composed of three files,
+one for javascript, another for css, and a .html file containg html with golang 
+template directives.
+
+         ├── internal
+         │   ├── components
+         │   │   ├── footer
+         │   │   │   ├── footer.css
+         │   │   │   ├── footer.js
+         │   │   │   └── footer.html
+
+
+Once a component is created, it must then be added to a `page` by specifying it 
+in a template directive within that `page`.
+
 # What is the bolt program? `bolt` is a Go program for building web applications using the bolt architecture
 
 Bolt is not a third-party dependency, `bolt` is a Go program designed for rapid
@@ -152,10 +167,16 @@ I'm already using bolt to build
 [TagMachine](https://github.com/hartsfield/machinetag), a dynamic social 
 media platform.
 
+## Features in progress
+
+ - Generate basic scaffolding to begin building a web app
+ - Tooling to speed up the process of creating generic web components
+ - Convert data modeled in JSON into code for forms and basic database procedures
+ - Install components from third party git repos
+
 ## Quickstart
 
  - Compile bolt:
-
         $ cd
         $ git clone https://github.com/hartsfield/bolt
         $ cd bolt
@@ -164,7 +185,6 @@ media platform.
         $ bolt --help
 
  - Test Bolt:
-        
         $ cd test_tools
         $ ./testproject.sh
 
@@ -178,18 +198,22 @@ media platform.
         $ mkdir boltapp
         $ cd boltapp
         $ bolt
+
  - Create a component and insert it into the main page:
         
         $ bolt --new-component=test && bolt --insert-component=test
- - Automatically create a navigation bar using bolt:
+
+ - This command generates a navigation bar component, and three other 
+components, one for each section. The sections have no content yet, so can't be
+seen, but the boiler plate code to begin their creation is there.
 
         $ bolt --autonav=section1,section2,section3
+
  - Add a new route and handler:
 
         $ bolt --new-route=path,handlerName
- - Routes can be registered manually in `router.go`
 
- - Add an upload form based on a json model:
+ - Create an upload form and stream of uploads based on data modeled in a `.json`
 
         $ touch model.json
         $ echo '{
@@ -198,50 +222,6 @@ media platform.
         $    "textarea": ["About"]
         $ }' >> model.json
         $ bolt --streamable model.json
-
-# More info
-
-## Features in progress
- - Generate basic scaffolding to begin building a web app
- - Tooling to speed up the process of creating generic web components
- - Convert data modeled in JSON into code for forms and basic database procedures
- - Install components from third party git repos
-
-
-This command generates a navigation bar component, and three other components, 
-one for each section. The sections have no content yet, so can't be seen, but
-the boiler plate code to begin their creation has been generated.
-
-Components are stored in `internal/components`, and are composed of three files,
-one for javascript, another for css, and a .html file containg html with golang 
-template directives.
-
-    > .
-         ├── internal
-         │   ├── components
-         │   │   ├── footer
-         │   │   │   ├── footer.css
-         │   │   │   ├── footer.js
-         │   │   │   └── footer.html
-
-
-Once a component is created, it must then be added to a `page` by specifying it 
-in a template directive.
-
-Create an upload form and stream of uploads based on data modeled in a `.json`
-file:
-
-`model.json`:
-
-    {
-        "file": ["FileElement"],
-        "text": ["Title","Year","Price"],
-        "textarea": ["About"]
-    }
-
-bolt command:
-
-    bolt --streamable model.json
 
 Result:
 
