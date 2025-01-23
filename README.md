@@ -2,15 +2,16 @@
 
 # Bolt  |  A Component-based MVC Architecture for Scalable Web Applications
 
-The bolt architecture is not complicated, instead bolt is designed to be fully 
-comprehendible. The bolt architecture does what most other web frameworks are
-capable of, but without introducing third party dependencies, or much overhead
-at all. In fact, the bolt architecture can probably be implemented in just 
-about any programming language supporting `html templating`.
+The `bolt architecture` is not complicated, instead, it's is designed to be
+fully comprehendible and generic. The bolt architecture does what most other
+web frameworks are capable of, without introducing third party dependencies, or
+much overhead at all. In fact, the bolt architecture can probably be 
+implemented in just about any programming language supporting 
+`html templating`, and used to build just about any GUI application.
 
-The `go` programming language is used in this documentation, but the 
+The `go` programming language is used in this documentation, but the bolt 
 architecture is meant to be explained herein so that a student programmer may
-implement it in another language. 
+implement it any way they see fit. 
 
 ## Templates explained
 
