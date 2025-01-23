@@ -40,7 +40,7 @@ directive`, which are wrapped in currly braces in go.
                               |                            
                               v
 
-       templates.Exec("page.html", &v)               <-- compile page.html with &v
+       templates.Exec("page.html", &v)            <-- compile page.html with &v
                                                               
                               |
                               |
