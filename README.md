@@ -1,4 +1,4 @@
-# Bolt  |  A Component-based MVC Architecture for Scalable Web Applications
+# Bolt  -  A Component-based MVC Architecture for Scalable Web Applications
 
 The `bolt architecture` is not complicated, instead, it's designed to be
 fully comprehendible and generic. The bolt architecture does what most other
