@@ -142,12 +142,12 @@ Components are stored in `internal/components`, and are composed of three files,
 one for javascript, another for css, and a .html file containg html with golang 
 template directives.
 
-         ├── internal
-         │   ├── components
-         │   │   ├── footer
-         │   │   │   ├── footer.css
-         │   │   │   ├── footer.js
-         │   │   │   └── footer.html
+    ├── internal
+    │   ├── components
+    │   │   ├── footer
+    │   │   │   ├── footer.css
+    │   │   │   ├── footer.js
+    │   │   │   └── footer.html
 
 
 Once a component is created, it must then be added to a `page` by specifying it 
@@ -177,51 +177,51 @@ media platform.
 ## Quickstart
 
  - Compile bolt:
-        $ cd
-        $ git clone https://github.com/hartsfield/bolt
-        $ cd bolt
-        $ go build -o bolt
-        $ mv bolt $PATH
-        $ bolt --help
+    $ cd
+    $ git clone https://github.com/hartsfield/bolt
+    $ cd bolt
+    $ go build -o bolt
+    $ mv bolt $PATH
+    $ bolt --help
 
  - Test Bolt:
-        $ cd test_tools
-        $ ./testproject.sh
+    $ cd test_tools
+    $ ./testproject.sh
 
-    Follow the link, you should see:
+Follow the link, you should see:
 
 <img width="582" alt="Screenshot 2025-01-07 at 4 13 35 AM" src="https://github.com/user-attachments/assets/c071f2ec-a85a-4165-a896-a6920e8ca4c0" />
 
  - Create a bolt app:
  
-        $ cd
-        $ mkdir boltapp
-        $ cd boltapp
-        $ bolt
+    $ cd
+    $ mkdir boltapp
+    $ cd boltapp
+    $ bolt
 
  - Create a component and insert it into the main page:
         
-        $ bolt --new-component=test && bolt --insert-component=test
+    $ bolt --new-component=test && bolt --insert-component=test
 
  - This command generates a navigation bar component, and three other 
 components, one for each section. The sections have no content yet, so can't be
 seen, but the boiler plate code to begin their creation is there.
 
-        $ bolt --autonav=section1,section2,section3
+    $ bolt --autonav=section1,section2,section3
 
  - Add a new route and handler:
 
-        $ bolt --new-route=path,handlerName
+    $ bolt --new-route=path,handlerName
 
  - Create an upload form and stream of uploads based on data modeled in a `.json`
 
-        $ touch model.json
-        $ echo '{
-        $    "file": ["FileElement"],
-        $    "text": ["Title","Year","Price"],
-        $    "textarea": ["About"]
-        $ }' >> model.json
-        $ bolt --streamable model.json
+    $ touch model.json
+    $ echo '{
+    $    "file": ["FileElement"],
+    $    "text": ["Title","Year","Price"],
+    $    "textarea": ["About"]
+    $ }' >> model.json
+    $ bolt --streamable model.json
 
 Result:
 
