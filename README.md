@@ -7,7 +7,7 @@ fully comprehendible and generic. The bolt architecture does what most other
 web frameworks are capable of, without introducing third party dependencies, or
 much overhead at all. In fact, the bolt architecture can probably be 
 implemented in just about any programming language supporting 
-`html templating`, and used to build just about any GUI application.
+`templating`, and used to build just about any GUI application.
 
 The `go` programming language is used in this documentation, but the bolt 
 architecture is meant to be explained herein so that a student programmer may
