@@ -58,6 +58,7 @@ func (sf *stringFlag) String() string {
 var (
 	flagCommands []*stringFlag = []*stringFlag{
 		{Name: "init", do: boltInit, Info: "\nEx.: --init appName\n\nInitializes a new bolt project in the directory 'appName'\n"},
+		{Name: "reconf", do: gitconf, Info: "\nEx.: --reconf\n\nFor now, just updates the app repo in bolt.conf.json with whats in .git/config\n"},
 		{Name: "new-page", do: createPage, Info: "\nEx.: --new-page pageName\n\nInitializes a new page with the given name\n"},
 		{Name: "new-component", do: createComponent, Info: "\nEx.: --new-component componentName\n\nInitializes a new component with the given name\n"},
 		{Name: "new-route", do: newRoute, Info: "\nEx.: --new-route routeName,handler\n\nInitializes a new route\n"},

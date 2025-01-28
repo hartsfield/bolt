@@ -186,6 +186,28 @@ func serviceReload(p []string) {
 	restartProxy()
 }
 
+func gitconf(ghrepo []string) {
+	c := readConf()
+	if ghrepo[0] == "" {
+		b, err := os.ReadFile(".git/config")
+		if err != nil {
+			log.Println(err)
+		}
+		var repo_should_be string
+		for _, l := range strings.Split(string(b), "\n") {
+			if strings.Contains(l, "url = ") {
+				repo_should_be = strings.Split(l, "url = ")[1]
+			}
+		}
+		c.App.Repo = repo_should_be
+		writeConf(c)
+		return
+	}
+	c.App.Repo = ghrepo[0]
+	writeConf(c)
+
+}
+
 // func remoteServiceRestart(args []string) {
 // 	name := args[0]
 // 	log.Println("cd " + name + " && go build -o " + name + " && pkill -f " + name + " && servicePort=$(cat ~/prox.conf | grep $2 | cut -d: -f1) logFilePath=./logfile.txt ./" + name + " &")
