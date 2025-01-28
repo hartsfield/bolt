@@ -196,7 +196,7 @@ func gitconf(ghrepo []string) {
 		var repo_should_be string
 		for _, l := range strings.Split(string(b), "\n") {
 			if strings.Contains(l, "url = ") {
-				repo_should_be = strings.Split(l, "url = ")[1]
+				repo_should_be = strings.Split(strings.Split(l, "url = ")[1], ".git")[0]
 			}
 		}
 		c.App.Repo = repo_should_be
